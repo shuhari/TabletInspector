@@ -1,0 +1,3 @@
+[submodule "3rdparty/WTL"]
+	path = 3rdparty/WTL
+	url = https://github.com/shuhari/WTL.git
