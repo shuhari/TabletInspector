@@ -27,6 +27,14 @@ LogListView::LogListView() {
 }
 
 
+BOOL LogListView::CreateInPane(HWND hwndParent) {
+    _container.Create(hwndParent, IDS_LOGLIST_TITLE);
+    Create(_container, rcDefault, NULL, 0, WS_EX_CLIENTEDGE);
+    _container.SetClient(*this);
+    return TRUE;
+}
+
+
 void LogListView::onInitialUpdate() {
     BOOL bRet = _iml.Create(IDB_LOGLIST, 16, 1, RGB(0, 0x7F, 0x46));
     ATLASSERT(bRet);
@@ -36,11 +44,6 @@ void LogListView::onInitialUpdate() {
 
     vector<LVCOLUMN> columns;
     addColumnsFromResStr(IDS_LOGLIST_COLUMNS);
-
-    // debug(IDS_LOG_TABLET_CONNECTED, L"abc");
-    // info(IDS_LOG_TABLET_CONNECTED, L"abc");
-    // warn(IDS_LOG_TABLET_CONNECTED, L"abc");
-    // error(IDS_LOG_TABLET_CONNECTED, L"abc");
 }
 
 

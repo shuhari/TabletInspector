@@ -20,6 +20,7 @@ public:
     LogListView();
     virtual ~LogListView() = default;
 
+    BOOL CreateInPane(HWND hwndParent);
     void onInitialUpdate();
 
     void debug(UINT uIdStr, ...);
@@ -29,6 +30,7 @@ public:
 
 private:
     CImageList      _iml;
+    CPaneContainer  _container;
 
     void            onDestroy();
 

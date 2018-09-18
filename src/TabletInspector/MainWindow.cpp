@@ -3,7 +3,8 @@
 #include "resource.h"
 
 
-MainWindow::MainWindow() {
+MainWindow::MainWindow() 
+    : _pReader(nullptr) {
 }
 
 
@@ -35,6 +36,11 @@ int MainWindow::onCreate(LPCREATESTRUCT pCreateStruct) {
 
 
 void MainWindow::onDestroy() {
+    if (_pReader) {
+        _pReader->close();
+        _pReader->waitForExit(5000);
+        _pReader = nullptr;
+    }
     PostQuitMessage(0);
 }
 
@@ -73,7 +79,7 @@ void MainWindow::onHelpAbout(UINT, int, CWindow) {
 
 
 void MainWindow::onPaneClose(UINT, int, CWindow wndFocus) {
-    if (wndFocus == _logListContainer) {
+    if (wndFocus == _logList.GetParent()) {
         showLogs(false);
     }
 }
@@ -84,15 +90,21 @@ void MainWindow::createChildren() {
     CreateSimpleStatusBar();
 
     _mainSplitter.Create(*this, rcDefault);
+    _logList.CreateInPane(_mainSplitter);
 
-    _logListContainer.Create(_mainSplitter, IDS_LOGLIST_TITLE);
-    _logList.Create(_logListContainer, rcDefault, NULL, 0, WS_EX_CLIENTEDGE);
-    _logListContainer.SetClient(_logList);
+    _clientSplitter.Create(_mainSplitter, rcDefault);
+    _canvasView.Create(_clientSplitter, rcDefault);
+    _detailView.Create(_clientSplitter, rcDefault,
+        NULL,
+        WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+        WS_EX_CLIENTEDGE);
 
     m_hWndClient = _mainSplitter;
     UpdateLayout();
-    _mainSplitter.SetSplitterPanes(NULL, _logListContainer);
+    _mainSplitter.SetSplitterPanes(_clientSplitter, _logList.GetParent());
     _mainSplitter.SetSplitterPos(600);
+    _clientSplitter.SetSplitterPanes(_detailView, _canvasView);
+    _clientSplitter.SetSplitterPos(600);
 }
 
 
@@ -103,6 +115,7 @@ void MainWindow::onInitialUpdate() {
     UISetCheck(ID_VIEW_LOGS, true);
 
     _logList.onInitialUpdate();
+    _detailView.onInitialUpdate();
 
     detectTablets();
 }
@@ -121,10 +134,24 @@ void MainWindow::showLogs(bool show) {
 
 void MainWindow::onTabletConnected(PCWSTR szDevicePath) {
     _logList.info(IDS_LOG_TABLET_CONNECTED, szDevicePath);
+    if (_pReader) {
+        _pReader->close();
+        _pReader = nullptr;
+    }
+    _pReader = new TabletReader(m_hWnd);
+    if (_pReader->open(szDevicePath)) {
+        _detailView.setTabletInfo(&_pReader->tabletInfo());
+    }
+    else {
+        _pReader->close();
+        delete _pReader;
+        _pReader = nullptr;
+    }
 }
 
 
 void MainWindow::onTabletDisconnected(PCWSTR szDevicePath) {
     _logList.info(IDS_LOG_TABLET_DISCONNECTED);
+    _detailView.setTabletInfo(nullptr);
 }
 

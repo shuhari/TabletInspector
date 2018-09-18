@@ -17,6 +17,7 @@ extern CAppModule _Module;
 #include <atlctrlx.h>
 #include <atlddx.h>
 #include <atlsplit.h>
+#include <atldlgs.h>
 #include <setupapi.h>
 #include <winusb.h>
 #include <assert.h>

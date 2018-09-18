@@ -3,7 +3,10 @@
 
 #include "resource.h"
 #include "LogListView.h"
+#include "CanvasView.h"
+#include "DetailView.h"
 #include "TabletDetecter.h"
+#include "TabletReader.h"
 
 
 class MainWindow : public CFrameWindowImpl<MainWindow>,
@@ -50,7 +53,11 @@ protected:
 private:
     LogListView         _logList;
     CHorSplitterWindow  _mainSplitter;
-    CPaneContainer      _logListContainer;
+    CanvasView          _canvasView;
+    DetailView          _detailView;
+    CSplitterWindow     _clientSplitter;
+
+    TabletReader*       _pReader;
 
     int                 onCreate(LPCREATESTRUCT pCreateStruct);
     void                onDestroy();
