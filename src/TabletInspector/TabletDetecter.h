@@ -4,7 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-
 #include "DeviceApi.h"
 #include "Public.h"
 

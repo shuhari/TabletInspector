@@ -7,6 +7,20 @@ MainWindow::MainWindow() {
 }
 
 
+BOOL MainWindow::PreTranslateMessage(MSG* pMsg) {
+    if (CFrameWindowImpl<MainWindow>::PreTranslateMessage(pMsg))
+        return TRUE;
+    return FALSE;
+}
+
+
+BOOL MainWindow::OnIdle() {
+    UIUpdateToolBar();
+    UIUpdateStatusBar();
+    return TRUE;
+}
+
+
 int MainWindow::onCreate(LPCREATESTRUCT pCreateStruct) {
     createChildren();
     onInitialUpdate();
@@ -24,7 +38,20 @@ void MainWindow::onFileExit(UINT, int, CWindow) {
 }
 
 
+void MainWindow::onViewLogs(UINT, int, CWindow) {
+    int singleMode = _mainSplitter.GetSinglePaneMode();
+    showLogs(singleMode == SPLIT_PANE_TOP);
+}
+
+
 void MainWindow::onHelpAbout(UINT, int, CWindow) {
+}
+
+
+void MainWindow::onPaneClose(UINT, int, CWindow wndFocus) {
+    if (wndFocus == _logListContainer) {
+        showLogs(false);
+    }
 }
 
 
@@ -43,10 +70,25 @@ void MainWindow::createChildren() {
 
 
 void MainWindow::onInitialUpdate() {
+
+    UISetCheck(ID_VIEW_LOGS, true);
+
     _logList.onInitialUpdate();
 
     detectTablets();
 }
+
+
+void MainWindow::showLogs(bool show) {
+    if (show) {
+        _mainSplitter.SetSinglePaneMode(SPLIT_PANE_NONE);
+    }
+    else {
+        _mainSplitter.SetSinglePaneMode(SPLIT_PANE_TOP);
+    }
+    UISetCheck(ID_VIEW_LOGS, show);
+}
+
 
 void MainWindow::onTabletConnected(PCWSTR szDevicePath) {
     _logList.info(IDS_LOG_TABLET_CONNECTED, szDevicePath);
