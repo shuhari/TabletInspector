@@ -10,6 +10,17 @@ using namespace std;
 #define ICON_INFO               1
 #define ICON_WARN               2
 #define ICON_ERROR              3
+#define MAX_ITEMS               1000
+
+
+#define FORMAT_CONTENT()              \
+    CString sFormat;                  \
+    sFormat.LoadString(uIdStr);       \
+    WCHAR szContent[1024] = { 0 };    \
+    va_list args;                     \
+    va_start(args, uIdStr);           \
+    _vsnwprintf_s(szContent, _countof(szContent), _TRUNCATE, sFormat, args); \
+    va_end(args)                     \
 
 
 LogListView::LogListView() {
@@ -17,19 +28,23 @@ LogListView::LogListView() {
 
 
 void LogListView::onInitialUpdate() {
-    _iml.Create(IDB_LOGLIST, 16, 0, RGB(0, 0, 0));
-    SetImageList(_iml, LVSIL_NORMAL);
+    BOOL bRet = _iml.Create(IDB_LOGLIST, 16, 1, RGB(0, 0x7F, 0x46));
+    ATLASSERT(bRet);
+    SetImageList(_iml, LVSIL_SMALL);
 
     SetExtendedListViewStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 
     vector<LVCOLUMN> columns;
     addColumnsFromResStr(IDS_LOGLIST_COLUMNS);
+
+    // debug(IDS_LOG_TABLET_CONNECTED, L"abc");
+    // info(IDS_LOG_TABLET_CONNECTED, L"abc");
+    // warn(IDS_LOG_TABLET_CONNECTED, L"abc");
+    // error(IDS_LOG_TABLET_CONNECTED, L"abc");
 }
 
 
 void LogListView::onDestroy() {
-    SetImageList(NULL, LVSIL_NORMAL);
-    _iml.Destroy();
 }
 
 
@@ -60,4 +75,45 @@ void LogListView::addColumnsFromResStr(UINT uStrId) {
         col.cx = _wtoi(parts[i * 3 + 2]);
         InsertColumn((int)i, &col);
     }
+}
+
+
+void LogListView::debug(UINT uIdStr, ...) {
+    FORMAT_CONTENT();
+    addLog(ICON_DEBUG, szContent);
+}
+
+
+void LogListView::info(UINT uIdStr, ...) {
+    FORMAT_CONTENT();
+    addLog(ICON_INFO, szContent);
+}
+
+
+void LogListView::warn(UINT uIdStr, ...) {
+    FORMAT_CONTENT();
+    addLog(ICON_WARN, szContent);
+}
+
+
+void LogListView::error(UINT uIdStr, ...) {
+    FORMAT_CONTENT();
+    addLog(ICON_ERROR, szContent);
+}
+
+
+void LogListView::addLog(int nIcon, PCWSTR szContent) {
+    if (GetItemCount() >= MAX_ITEMS)
+        DeleteItem(0);
+
+    SYSTEMTIME st;
+    GetLocalTime(&st);
+    CString sTime;
+    sTime.Format(L"%02d:%02d:%02d",
+        st.wHour, st.wMinute, st.wSecond);
+
+    int nIndex = GetItemCount();
+    InsertItem(nIndex, sTime, nIcon);
+    SetItemText(nIndex, 1, szContent);
+    EnsureVisible(nIndex, TRUE);
 }

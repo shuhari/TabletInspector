@@ -22,11 +22,17 @@ public:
 
     void onInitialUpdate();
 
+    void debug(UINT uIdStr, ...);
+    void info(UINT uIdStr, ...);
+    void warn(UINT uIdStr, ...);
+    void error(UINT uIdStr, ...);
+
 private:
     CImageList      _iml;
 
     void            onDestroy();
 
     void            addColumnsFromResStr(UINT uStrId);
+    void            addLog(int nIcon, PCWSTR szContent);
 };
 

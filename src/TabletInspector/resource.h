@@ -6,6 +6,8 @@
 #define IDS_LOGLIST_COLUMNS             102
 #define IDB_LOGLIST                     103
 #define IDS_LOGLIST_TITLE               103
+#define IDS_LOG_TABLET_CONNECTED        104
+#define IDS_LOG_TABLET_DISCONNECTED     105
 #define ID_FILE_EXIT                    40001
 #define ID_HELP_ABOUT                   40002
 

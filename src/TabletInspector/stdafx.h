@@ -19,3 +19,4 @@ extern CAppModule _Module;
 #include <atlsplit.h>
 #include <setupapi.h>
 #include <winusb.h>
+#include <assert.h>

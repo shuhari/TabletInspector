@@ -44,4 +44,16 @@ void MainWindow::createChildren() {
 
 void MainWindow::onInitialUpdate() {
     _logList.onInitialUpdate();
+
+    detectTablets();
 }
+
+void MainWindow::onTabletConnected(PCWSTR szDevicePath) {
+    _logList.info(IDS_LOG_TABLET_CONNECTED, szDevicePath);
+}
+
+
+void MainWindow::onTabletDisconnected(PCWSTR szDevicePath) {
+    _logList.info(IDS_LOG_TABLET_DISCONNECTED);
+}
+
