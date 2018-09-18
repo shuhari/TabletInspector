@@ -19,6 +19,8 @@ public:
         MSG_WM_DESTROY(onDestroy)
 
         COMMAND_ID_HANDLER_EX(ID_FILE_EXIT, onFileExit)
+        COMMAND_ID_HANDLER_EX(ID_VIEW_TOOLBAR, onViewToolbar)
+        COMMAND_ID_HANDLER_EX(ID_VIEW_STATUS_BAR, onViewStatusBar)
         COMMAND_ID_HANDLER_EX(ID_VIEW_LOGS, onViewLogs)
         COMMAND_ID_HANDLER_EX(ID_HELP_ABOUT, onHelpAbout)
         COMMAND_ID_HANDLER_EX(ID_PANE_CLOSE, onPaneClose)
@@ -30,6 +32,8 @@ public:
     END_MSG_MAP()
 
     BEGIN_UPDATE_UI_MAP(MainWindow)
+        UPDATE_ELEMENT(ID_VIEW_TOOLBAR, UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
+        UPDATE_ELEMENT(ID_VIEW_STATUS_BAR, UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
         UPDATE_ELEMENT(ID_VIEW_LOGS, UPDUI_MENUPOPUP | UPDUI_TOOLBAR)
     END_UPDATE_UI_MAP()
 
@@ -52,6 +56,8 @@ private:
     void                onDestroy();
 
     void                onFileExit(UINT, int, CWindow);
+    void                onViewToolbar(UINT, int, CWindow);
+    void                onViewStatusBar(UINT, int, CWindow);
     void                onViewLogs(UINT, int, CWindow);
     void                onHelpAbout(UINT, int, CWindow);
     void                onPaneClose(UINT, int, CWindow);

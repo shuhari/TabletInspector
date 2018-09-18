@@ -23,8 +23,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR szCmdLin
         MainWindow mainWin;
         HWND hwndMain = mainWin.CreateEx();
         ATLASSERT(::IsWindow(hwndMain));
-        msgLoop.AddMessageFilter(&mainWin);
-        msgLoop.AddIdleHandler(&mainWin);
 
         mainWin.ShowWindow(nCmdShow);
         mainWin.UpdateWindow();

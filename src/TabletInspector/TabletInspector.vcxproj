@@ -197,6 +197,7 @@
   <ItemGroup>
     <Image Include="res\app.ico" />
     <Image Include="res\loglist.bmp" />
+    <Image Include="res\toolbar.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
