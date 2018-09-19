@@ -23,6 +23,7 @@ BOOL MainWindow::OnIdle() {
 
 
 int MainWindow::onCreate(LPCREATESTRUCT pCreateStruct) {
+
     createChildren();
     onInitialUpdate();
 
@@ -30,7 +31,6 @@ int MainWindow::onCreate(LPCREATESTRUCT pCreateStruct) {
     ATLASSERT(pLoop != nullptr);
     pLoop->AddMessageFilter(this);
     pLoop->AddIdleHandler(this);
-
     return 0;
 }
 

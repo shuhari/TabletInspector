@@ -18,10 +18,10 @@ TabletReader::~TabletReader() {
 
 
 bool TabletReader::open(PCWSTR szDevicePath) {
+    WinUsbBuffer devBuffer((PBYTE)&_devDescriptor, sizeof(_devDescriptor));
     if (!_usb.open(szDevicePath))
         goto error_exit;
 
-    WinUsbBuffer devBuffer((PBYTE)&_devDescriptor, sizeof(_devDescriptor));
     if (!_usb.getDescriptor(USB_DEVICE_DESCRIPTOR_TYPE, 
         0, 0, devBuffer))
         goto error_exit;
@@ -97,8 +97,31 @@ bool TabletReader::parse_201(const BYTE* pBuf) {
     return true;
 }
 
+UINT32 parse_maxx(BYTE buf[]) { return *(buf + 2) << 16 | *(buf + 1) << 8 | *buf; }
+UINT32 parse_maxy(BYTE buf[]) { return *(buf + 5) << 16 | *(buf + 4) << 8 | *(buf + 3); }
+UINT16 parse_maxp(BYTE buf[]) { return *(buf + 7) << 8 | *(buf + 6); }
+UINT16 parse_lpi(BYTE buf[]) { return *(buf + 9) << 8 | *(buf + 8); }
+BYTE  parse_pbtn_num(BYTE buf[]) { return *(buf + 10); }
+BYTE  parse_hbtn_num(BYTE buf[]) { return *(buf + 11); }
+BYTE  parse_sbtn_num(BYTE buf[]) { return *(buf + 12); }
+BYTE  parse_is_monitor(BYTE buf[]) { return *(buf + 14) & 0xa; }
+BYTE  parse_is_passive(BYTE buf[]) { return *(buf + 14) & 0xc; }
+BYTE  parse_rate(BYTE buf[]) { return *(buf + 16); }
+
 
 bool TabletReader::parse_200(const BYTE* pBuf) {
+    const BYTE* pData = pBuf + 2;
+    _tabletInfo.size.cx = (pData[2] << 16) | (pData[1] << 8) | pData[0];
+    _tabletInfo.size.cy = (pData[5] << 16) | (pData[4] << 8) | pData[3];
+    _tabletInfo.maxPressure = (pData[7] << 8) | pData[6];
+    _tabletInfo.pbtnNum = pData[10];
+    _tabletInfo.hbtnNum = pData[11];
+    _tabletInfo.sbtnNum = pData[12];
+    _tabletInfo.lpi = (pData[9] << 8) | pData[8];
+    _tabletInfo.rate = pData[16] * 4;
+    _tabletInfo.isMonitor = (pData[14] & 0xa) != 0;
+    _tabletInfo.isPassive = (pData[14] & 0xc) != 0;
+
     return true;
 }
 

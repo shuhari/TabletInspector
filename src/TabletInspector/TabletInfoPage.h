@@ -27,4 +27,5 @@ private:
     CListViewCtrl _lsv;
 
     void addItem(PCWSTR name, PCWSTR value);
+    void addItem(PCWSTR name, UINT value);
 };
