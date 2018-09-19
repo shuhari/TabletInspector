@@ -172,6 +172,7 @@
     <ClInclude Include="DeviceApi.h" />
     <ClInclude Include="LogListView.h" />
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="Messages.h" />
     <ClInclude Include="Public.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="DeviceApi.cpp" />
     <ClCompile Include="LogListView.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="Messages.cpp" />
     <ClCompile Include="Public.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

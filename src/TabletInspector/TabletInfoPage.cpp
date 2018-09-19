@@ -15,6 +15,7 @@ void TabletInfoPage::onInitialUpdate() {
 
 void TabletInfoPage::setInfo(TabletInfo* pInfo) {
     _lsv.DeleteAllItems();
+    _pTabletInfo = pInfo;
 
     if (pInfo) {
         addItem(L"OEM", pInfo->oem);
@@ -31,6 +32,15 @@ void TabletInfoPage::setInfo(TabletInfo* pInfo) {
         addItem(L"Rate", pInfo->rate);
         addItem(L"IsMonitor", pInfo->isMonitor);
         addItem(L"IsPassive", pInfo->isPassive);
+
+        _presureProgress.SetRange(0, pInfo->maxPressure);
+        _presureProgress.SetPos(0);
+    }
+    else {
+        _lblX.SetWindowTextW(L"");
+        _lblY.SetWindowTextW(L"");
+        _lblPressure.SetWindowTextW(L"");
+        _presureProgress.SetPos(0);
     }
 }
 
@@ -46,4 +56,29 @@ void TabletInfoPage::addItem(PCWSTR name, UINT value) {
     CString sValue;
     sValue.Format(L"%u", value);
     addItem(name, sValue);
+}
+
+void TabletInfoPage::setPacket(PacketDataMessage* pMsg) {
+    if (_pTabletInfo && pMsg && pMsg->isValid()) {
+        static int prevX = 0, prevY = 0;
+        static int prevPressure = 0;
+        CPoint pt = pMsg->point();
+        CString sText;
+        if (pt.x != prevX) {
+            sText.Format(L"X: %d / %d", pt.x, _pTabletInfo->size.cx);
+            _lblX.SetWindowText(sText);
+        }
+        if (pt.y != prevY) {
+            sText.Format(L"Y: %d / %d", pt.y, _pTabletInfo->size.cy);
+            _lblY.SetWindowText(sText);
+        }
+        if (prevPressure != pMsg->pressure()) {
+            sText.Format(L"Pressure: %d / %d", pMsg->pressure(), _pTabletInfo->maxPressure);
+            _lblPressure.SetWindowTextW(sText);
+            _presureProgress.SetPos(pMsg->pressure());
+        }
+        prevX = pt.x;
+        prevY = pt.y;
+        prevPressure = pMsg->pressure();
+    }
 }

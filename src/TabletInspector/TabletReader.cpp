@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TabletReader.h"
+#include "Messages.h"
 
 
 using namespace win32;
@@ -136,12 +137,41 @@ bool TabletReader::parse_202(const BYTE* pBuf) {
 }
 
 
+bool TabletReader::read(PBYTE pBuf, int nBufSize, size_t& readed) {
+    WinUsbBuffer wub(pBuf, nBufSize);
+    if (!_usb.readPipe(_pipeInfo.PipeId, wub)) {
+        readed = -1;
+        setLastError(_usb.lastError());
+        return false;
+    }
+    readed = wub.transferred;
+    return true;
+}
+
+
 UINT __stdcall TabletReader::threadProc(PVOID pParam) {
     ATLASSERT(pParam != nullptr);
     TabletReader* pReader = (TabletReader*)pParam;
 
+    BYTE packet[64] = { 0 };
     while (true) {
-        Sleep(20);
+        memset(packet, 0, sizeof(packet));
+        size_t nReaded = 0;
+        if (pReader->read(packet, sizeof(packet), nReaded) && nReaded > 0) {
+            auto pMsg = new PacketDataMessage(packet, (int)nReaded);
+            pMsg->post(pReader->_hwndNotify);
+        }
+        else {
+            DWORD dwError = pReader->lastError();
+            if (dwError == ERROR_INVALID_HANDLE) { // closed by owner
+                break;
+            }
+            else {
+                wchar_t szDebug[100] = { 0 };
+                wsprintf(szDebug, L"read error=0x%X", pReader->lastError());
+                OutputDebugString(szDebug);
+            }
+        }
     }
 
     delete pReader;

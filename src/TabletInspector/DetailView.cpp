@@ -18,3 +18,7 @@ void DetailView::onInitialUpdate() {
 void DetailView::setTabletInfo(TabletInfo* pInfo) {
     _tabletInfoPage.setInfo(pInfo);
 }
+
+void DetailView::setPacketData(PacketDataMessage* pMsg) {
+    _tabletInfoPage.setPacket(pMsg);
+}

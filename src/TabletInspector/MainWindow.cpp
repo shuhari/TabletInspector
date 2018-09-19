@@ -45,6 +45,16 @@ void MainWindow::onDestroy() {
 }
 
 
+LRESULT MainWindow::onTabletMsg(UINT uMsg, WPARAM wParam, LPARAM lParam) {
+    ATLASSERT(lParam != 0);
+    
+    ITabletMessage* pMsg = (ITabletMessage*)lParam;
+    processTabletMsg(pMsg);
+    delete pMsg;
+    return 0;
+}
+
+
 void MainWindow::onFileExit(UINT, int, CWindow) {
     PostMessage(WM_CLOSE);
 }
@@ -155,3 +165,27 @@ void MainWindow::onTabletDisconnected(PCWSTR szDevicePath) {
     _detailView.setTabletInfo(nullptr);
 }
 
+
+void MainWindow::processTabletMsg(ITabletMessage* pMsg) {
+    switch (pMsg->msgType()) {
+    case TABLET_MSG_PACKET_DATA:
+        PacketDataMessage* pPacket = (PacketDataMessage*)pMsg;
+        processPacketDataMsg(pPacket);
+        break;
+    }
+}
+
+
+void MainWindow::processPacketDataMsg(PacketDataMessage* pMsg) {
+    /*wchar_t szDebug[200] = { 0 };
+    wsprintf(szDebug, 
+        L"isValid: %d, type: %d, pt: (%d, %d), pressure: %d, rotate: %d, %d, hbtn: %d, slider: %d, touch: %d\n",
+        pMsg->isValid(),
+        pMsg->packetType(),
+        pMsg->point().x, pMsg->point().y,
+        pMsg->pressure(), 
+        pMsg->rotatePoint().x, pMsg->rotatePoint().y,
+        pMsg->hButton(), pMsg->slider(), pMsg->touchId());
+    OutputDebugString(szDebug);*/
+    _detailView.setPacketData(pMsg);
+}

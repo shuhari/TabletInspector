@@ -14,6 +14,9 @@ namespace win32 {
         bool recordAndReturn(BOOL result);
         bool recordAndReturn(bool result);
 
+    protected:
+        void setLastError(DWORD dwError);
+
     private:
         DWORD _lastError;
     };  // class LastErrorSupport

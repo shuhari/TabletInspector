@@ -7,6 +7,7 @@
 #include "DetailView.h"
 #include "TabletDetecter.h"
 #include "TabletReader.h"
+#include "Messages.h"
 
 
 class MainWindow : public CFrameWindowImpl<MainWindow>,
@@ -20,6 +21,7 @@ public:
     BEGIN_MSG_MAP_EX(MainWindow)
         MSG_WM_CREATE(onCreate)
         MSG_WM_DESTROY(onDestroy)
+        MESSAGE_HANDLER_EX(WM_TABLET, onTabletMsg)
 
         COMMAND_ID_HANDLER_EX(ID_FILE_EXIT, onFileExit)
         COMMAND_ID_HANDLER_EX(ID_VIEW_TOOLBAR, onViewToolbar)
@@ -61,6 +63,7 @@ private:
 
     int                 onCreate(LPCREATESTRUCT pCreateStruct);
     void                onDestroy();
+    LRESULT             onTabletMsg(UINT uMsg, WPARAM wParam, LPARAM lParam);
 
     void                onFileExit(UINT, int, CWindow);
     void                onViewToolbar(UINT, int, CWindow);
@@ -72,4 +75,7 @@ private:
     void                createChildren();
     void                onInitialUpdate();
     void                showLogs(bool show);
+    
+    void                processTabletMsg(ITabletMessage* pMsg);
+    void                processPacketDataMsg(PacketDataMessage* pMsg);
 };

@@ -4,7 +4,7 @@
 #include "TabletInfo.h"
 
 
-class TabletReader {
+class TabletReader : public win32::LastErrorSupport {
 public:
     TabletReader(HWND hwndNotify);
     ~TabletReader();
@@ -29,4 +29,5 @@ private:
     bool parse_201(const BYTE* pBuf);
     bool parse_200(const BYTE* pBuf);
     bool parse_202(const BYTE* pBuf);
+    bool read(PBYTE pBuf, int nBufSize, size_t& readed);
 };

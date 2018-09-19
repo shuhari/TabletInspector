@@ -20,6 +20,11 @@ void LastErrorSupport::recordLastError() {
 }
 
 
+void LastErrorSupport::setLastError(DWORD dwError) {
+    _lastError = dwError;
+}
+
+
 bool LastErrorSupport::hasLastError() {
     return _lastError != ERROR_SUCCESS;
 }

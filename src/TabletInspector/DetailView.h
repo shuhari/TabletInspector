@@ -3,6 +3,7 @@
 
 #include "TabletInfoPage.h"
 #include "TabletInfo.h"
+#include "Messages.h"
 
 
 class DetailView : public CTabViewImpl<DetailView> {
@@ -14,6 +15,7 @@ public:
 
     void onInitialUpdate();
     void setTabletInfo(TabletInfo* pInfo);
+    void setPacketData(PacketDataMessage* pMsg);
 
 private:
     TabletInfoPage          _tabletInfoPage;
