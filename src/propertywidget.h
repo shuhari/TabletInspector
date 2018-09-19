@@ -2,6 +2,7 @@
 
 
 #include "precompiled.h"
+#include "tabletinfowidget.h"
 
 
 class PropertyWidget : public QTabWidget
@@ -10,5 +11,8 @@ class PropertyWidget : public QTabWidget
 public:
     PropertyWidget();
     virtual ~PropertyWidget() = default;
+
+private:
+    TabletInfoWidget* _pTabletInfoWidget;
 };
 

@@ -28,7 +28,9 @@ SOURCES += \
     loglistwidget.cpp \
     canvaswidget.cpp \
     propertywidget.cpp \
-    tabletindicatorwidget.cpp
+    tabletindicatorwidget.cpp \
+    tabletinfowidget.cpp \
+    win32api.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +40,9 @@ HEADERS += \
     loglistwidget.h \
     canvaswidget.h \
     propertywidget.h \
-    tabletindicatorwidget.h
+    tabletindicatorwidget.h \
+    tabletinfowidget.h \
+    win32api.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

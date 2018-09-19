@@ -8,7 +8,7 @@
 #include <windows.h>
 #include <setupapi.h>
 #include <winusb.h>
-
+#include <assert.h>
 
 #include <QtCore>
 #include <QtGui>

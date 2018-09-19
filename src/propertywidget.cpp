@@ -1,7 +1,8 @@
 #include "propertywidget.h"
 
 
-PropertyWidget::PropertyWidget()
-{
+PropertyWidget::PropertyWidget() {
+    _pTabletInfoWidget = new TabletInfoWidget();
 
+    addTab(_pTabletInfoWidget, tr("Tablet"));
 }
