@@ -60,6 +60,9 @@
     <ClInclude Include="Messages.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TabletPreviewCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -96,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Messages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TabletPreviewCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

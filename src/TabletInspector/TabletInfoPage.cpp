@@ -8,6 +8,10 @@ TabletInfoPage::TabletInfoPage() {
 
 void TabletInfoPage::onInitialUpdate() {
     DoDataExchange(DDX_LOAD);
+    
+    _previewCtrl.SubclassWindow(GetDlgItem(IDC_TABLET_PREVIEW));
+    _previewCtrl.SetWindowLong(GWL_STYLE,
+        _previewCtrl.GetStyle() | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
     _lsv.InsertColumn(0, L"Name", LVCFMT_LEFT, 200);
     _lsv.InsertColumn(1, L"Value", LVCFMT_LEFT, 600);
 }
@@ -35,12 +39,14 @@ void TabletInfoPage::setInfo(TabletInfo* pInfo) {
 
         _presureProgress.SetRange(0, pInfo->maxPressure);
         _presureProgress.SetPos(0);
+        _previewCtrl.setSize(pInfo->size);
     }
     else {
         _lblX.SetWindowTextW(L"");
         _lblY.SetWindowTextW(L"");
         _lblPressure.SetWindowTextW(L"");
         _presureProgress.SetPos(0);
+        _previewCtrl.unsetSize();
     }
 }
 
@@ -80,5 +86,6 @@ void TabletInfoPage::setPacket(PacketDataMessage* pMsg) {
         prevX = pt.x;
         prevY = pt.y;
         prevPressure = pMsg->pressure();
+        _previewCtrl.setPos(pt);
     }
 }

@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "TabletInfo.h"
 #include "Messages.h"
+#include "TabletPreviewCtrl.h"
 
 
 class TabletInfoPage : public CDialogImpl<TabletInfoPage>,
@@ -35,6 +36,7 @@ private:
     CStatic             _lblY;
     CStatic             _lblPressure;
     CProgressBarCtrl    _presureProgress;
+    TabletPreviewCtrl   _previewCtrl;
 
     TabletInfo*         _pTabletInfo;
 
