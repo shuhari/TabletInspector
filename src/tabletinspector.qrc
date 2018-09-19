@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="app.ico">images/app.ico</file>
+        <file alias="props.png">images/props.png</file>
+        <file alias="data.png">images/data.png</file>
+        <file alias="logs.png">images/logs.png</file>
+        <file alias="light_on.png">images/light_on.png</file>
+        <file alias="light_off.png">images/light_off.png</file>
+    </qresource>
+</RCC>
