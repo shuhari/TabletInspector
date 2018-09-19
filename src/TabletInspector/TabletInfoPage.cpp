@@ -20,6 +20,7 @@ void TabletInfoPage::setInfo(TabletInfo* pInfo) {
         addItem(L"OEM", pInfo->oem);
         addItem(L"Model", pInfo->model);
         addItem(L"Fixture Date", pInfo->fixtureDate);
+        addItem(L"Company", pInfo->company);
         addItem(L"MaxX", pInfo->size.cx);
         addItem(L"MaxY", pInfo->size.cy);
         addItem(L"MaxPressure", pInfo->maxPressure);

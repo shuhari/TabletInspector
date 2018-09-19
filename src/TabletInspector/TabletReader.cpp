@@ -31,12 +31,15 @@ bool TabletReader::open(PCWSTR szDevicePath) {
     if (!_usb.queryPipe(0, 0, _pipeInfo))
         goto error_exit;
     
-    BYTE buf[64] = { 0 };
+    BYTE buf[128] = { 0 };
     if (!sendControl(201, buf, sizeof(buf)) ||
         !parse_201(buf))
         goto error_exit;
     if (!sendControl(200, buf, sizeof(buf)) ||
         !parse_200(buf))
+        goto error_exit;
+    if (!sendControl(202, buf, sizeof(buf)) ||
+        !parse_202(buf))
         goto error_exit;
 
     _hThread = (HANDLE)_beginthreadex(NULL, 0, threadProc, this, 0, 0);
@@ -97,17 +100,6 @@ bool TabletReader::parse_201(const BYTE* pBuf) {
     return true;
 }
 
-UINT32 parse_maxx(BYTE buf[]) { return *(buf + 2) << 16 | *(buf + 1) << 8 | *buf; }
-UINT32 parse_maxy(BYTE buf[]) { return *(buf + 5) << 16 | *(buf + 4) << 8 | *(buf + 3); }
-UINT16 parse_maxp(BYTE buf[]) { return *(buf + 7) << 8 | *(buf + 6); }
-UINT16 parse_lpi(BYTE buf[]) { return *(buf + 9) << 8 | *(buf + 8); }
-BYTE  parse_pbtn_num(BYTE buf[]) { return *(buf + 10); }
-BYTE  parse_hbtn_num(BYTE buf[]) { return *(buf + 11); }
-BYTE  parse_sbtn_num(BYTE buf[]) { return *(buf + 12); }
-BYTE  parse_is_monitor(BYTE buf[]) { return *(buf + 14) & 0xa; }
-BYTE  parse_is_passive(BYTE buf[]) { return *(buf + 14) & 0xc; }
-BYTE  parse_rate(BYTE buf[]) { return *(buf + 16); }
-
 
 bool TabletReader::parse_200(const BYTE* pBuf) {
     const BYTE* pData = pBuf + 2;
@@ -122,6 +114,24 @@ bool TabletReader::parse_200(const BYTE* pBuf) {
     _tabletInfo.isMonitor = (pData[14] & 0xa) != 0;
     _tabletInfo.isPassive = (pData[14] & 0xc) != 0;
 
+    return true;
+}
+
+
+bool TabletReader::parse_202(const BYTE* pBuf) {
+    PWSTR pStart = (PWSTR)(pBuf + 2);
+    int iIndex = 63;
+    for (int i = 0; i < 63; i++) {
+        WCHAR ch = *(pStart + i);
+        if (ch == 0 || ch >= 0x80) {
+            iIndex = i;
+            break;
+        }
+    }
+    WCHAR szBuf[64];
+    ZeroMemory(szBuf, sizeof(szBuf));
+    memcpy(szBuf, pStart, iIndex * sizeof(WCHAR));
+    _tabletInfo.company = szBuf;
     return true;
 }
 

@@ -6,6 +6,7 @@ public:
     CString oem;
     CString model;
     CString fixtureDate;
+    CString company;
 
     SIZE size;
     UINT maxPressure;

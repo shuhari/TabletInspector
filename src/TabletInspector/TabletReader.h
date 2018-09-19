@@ -28,4 +28,5 @@ private:
     bool sendControl(int nCmd, PBYTE buf, size_t bufSize);
     bool parse_201(const BYTE* pBuf);
     bool parse_200(const BYTE* pBuf);
+    bool parse_202(const BYTE* pBuf);
 };
