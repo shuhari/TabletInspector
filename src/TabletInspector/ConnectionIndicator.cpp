@@ -17,7 +17,7 @@ ConnectionIndicator::ConnectionIndicator(QWidget* parent)
     auto hbox = new QHBoxLayout();
     hbox->setMargin(0);
     hbox->addWidget(_icon);
-    hbox->addWidget(_text);
+    hbox->addWidget(_text, 1);
     setLayout(hbox);
 }
 

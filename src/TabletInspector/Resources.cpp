@@ -6,20 +6,30 @@ ImageRegistry ImageRegistry::_instance;
 
 
 ImageRegistry::ImageRegistry() {
-    _items[ImageKey::app] = ":/images/app.ico";
+    define(ImageKey::app, ":/images/app.ico");
 
-    _items[ImageKey::prop] = ":/images/prop.png";
-    _items[ImageKey::data] = ":/images/data.png";
-    _items[ImageKey::logs] = ":/images/logs.png";
+    define(ImageKey::prop, ":/images/prop.png");
+    define(ImageKey::data, ":/images/data.png");
+    define(ImageKey::logs, ":/images/logs.png");
 
-    _items[ImageKey::connected] = ":/images/connected.png";
-    _items[ImageKey::disconnected] = ":/images/disconnected.png";
+    define(ImageKey::debug, ":/images/debug.png");
+    define(ImageKey::info, ":/images/info.png");
+    define(ImageKey::warn, ":/images/warn.png");
+    define(ImageKey::error, ":/images/error.png");
+
+    define(ImageKey::connected, ":/images/connected.png");
+    define(ImageKey::disconnected, ":/images/disconnected.png");
+}
+
+
+void ImageRegistry::define(ImageKey key, PCSTR path) {
+    _paths[key] = QString(path);
 }
 
 
 QString ImageRegistry::getPath(ImageKey key) {
-    if (_items.contains(key))
-        return _items[key];
+    if (_paths.contains(key))
+        return _paths[key];
     return QString("");
 }
 

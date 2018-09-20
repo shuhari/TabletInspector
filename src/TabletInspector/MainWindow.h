@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "CanvasWidget.h"
 #include "ConnectionIndicator.h"
+#include "LogList.h"
 
 
 class MainWindow : public QMainWindow
@@ -21,8 +22,10 @@ private:
         helpAbout = 21,
     };
     QMap<Actions, QAction*> _actions;
+    
     CanvasWidget*           _canvas;
     ConnectionIndicator*    _connectionIndicator;
+    LogList*                _logList;
 
     void createActions();
     void createToolBar();

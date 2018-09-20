@@ -39,9 +39,11 @@ void MainWindow::createCentral() {
 
 
 void MainWindow::createDocks() {
+    _logList = new LogList();
+
     auto leftDock = newDock(tr("Information"), nullptr, Qt::LeftDockWidgetArea);
     auto rightDock = newDock(tr("Data"), nullptr, Qt::RightDockWidgetArea);
-    auto bottomDock = newDock(tr("Logs"), nullptr, Qt::BottomDockWidgetArea);
+    auto bottomDock = newDock(tr("Logs"), _logList, Qt::BottomDockWidgetArea);
 
     _actions[viewProp] = leftDock->toggleViewAction();
     _actions[viewProp]->setIcon(ImageRegistry::icon(ImageKey::prop));

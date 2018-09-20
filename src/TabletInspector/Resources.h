@@ -23,7 +23,8 @@ public:
 private:
     ImageRegistry();
     QString getPath(ImageKey key);
+    void define(ImageKey key, PCSTR path);
 
     static ImageRegistry _instance;
-    QMap<ImageKey, QString> _items;
+    QMap<ImageKey, QString> _paths;
 };
