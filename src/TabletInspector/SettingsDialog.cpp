@@ -17,7 +17,7 @@ GeneralPage::GeneralPage(QWidget* parent)
     int iIndex = 0, iSelection = -1;
     for (QString localeName : locales) {
         QLocale locale(localeName);
-        QString name = QString("%1 [%1]").arg(locale.nativeLanguageName())
+        QString name = QString("%1 [%2]").arg(locale.nativeLanguageName())
             .arg(locale.nativeCountryName());
         _languageCbo->addItem(name, QVariant(localeName));
         if (localeName == settings.language())

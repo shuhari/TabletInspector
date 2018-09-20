@@ -5,6 +5,7 @@
 
 
 class GeneralPage : public QWidget {
+    Q_OBJECT
 public:
     GeneralPage(QWidget* parent = nullptr);
     virtual ~GeneralPage() = default;
@@ -17,6 +18,7 @@ private:
 
 
 class SettingsDialog : public QDialog {
+    Q_OBJECT
 public:
     SettingsDialog(QWidget* parent = nullptr);
     virtual ~SettingsDialog() = default;
