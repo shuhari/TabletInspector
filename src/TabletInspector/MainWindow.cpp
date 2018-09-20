@@ -4,8 +4,9 @@
 #include "Public.h"
 
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)  {
+MainWindow::MainWindow(QWidget *parent) : 
+    QMainWindow(parent),  
+    _usbReader(nullptr) {
     
 
     setWindowTitle(tr("Tablet Inspector"));
@@ -49,8 +50,12 @@ void MainWindow::createCentral() {
 
 void MainWindow::createDocks() {
     _logList = new LogList();
+    _tabletInfoPage = new TabletInfoPage();
 
-    auto leftDock = newDock(tr("Information"), nullptr, Qt::LeftDockWidgetArea);
+    auto propTab = new QTabWidget();
+    propTab->addTab(_tabletInfoPage, tr("Tablet Information"));
+
+    auto leftDock = newDock(tr("Information"), propTab, Qt::LeftDockWidgetArea);
     auto rightDock = newDock(tr("Data"), nullptr, Qt::RightDockWidgetArea);
     auto bottomDock = newDock(tr("Logs"), _logList, Qt::BottomDockWidgetArea);
 
@@ -121,6 +126,17 @@ void MainWindow::createMenuBar() {
 }
 
 
+/*bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) {
+
+    MSG *msg = (MSG*)message;
+    return false;
+}*/
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+    closeReader();
+    event->accept();
+}
+
 bool MainWindow::nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
     
     MSG *msg = (MSG*)message;
@@ -150,12 +166,33 @@ void MainWindow::onHelpAbout() {
 
 
 void MainWindow::onDeviceConnected(const QString& devicePath) {
+    closeReader();
+
     _logList->info(tr("Tablet connected: %1").arg(devicePath));
-    _connectionIndicator->setConnected(devicePath);
+
+    auto reader = new UsbReader();
+    if (reader->open(devicePath)) {
+        _usbReader = reader;
+        auto& tabletInfo = reader->tabletInfo();
+        _connectionIndicator->setConnected(tabletInfo.model);
+        _tabletInfoPage->setInfo(&tabletInfo);
+    }
 }
 
 
 void MainWindow::onDeviceDisconnected(const QString& devicePath) {
+    closeReader();
+
     _logList->info(tr("Tablet disconnected: %1").arg(devicePath));
     _connectionIndicator->setDisconnected();
+    _tabletInfoPage->setInfo(nullptr);
+}
+
+
+void MainWindow::closeReader() {
+    if (_usbReader != nullptr) {
+        _usbReader->close();
+        delete _usbReader;
+        _usbReader = nullptr;
+    }
 }
