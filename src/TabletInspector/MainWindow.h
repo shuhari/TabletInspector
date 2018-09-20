@@ -29,7 +29,8 @@ private:
     enum Actions {
         fileExit = 1,
         viewToolBar = 11, viewStatusBar = 12, viewProp = 13, viewData = 14, viewLogs = 15,
-        helpAbout = 21,
+        toolSettings = 21,
+        helpAbout = 31,
     };
     QMap<Actions, QAction*> _actions;
     
@@ -54,6 +55,7 @@ private:
 private slots:
     void        onFileExit();
     void        onViewStatusBar();
+    void        onToolSettings();
     void        onHelpAbout();
 
     void        onDeviceConnected(const QString& devicePath);

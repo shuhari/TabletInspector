@@ -7,6 +7,7 @@ ImageRegistry ImageRegistry::_instance;
 
 ImageRegistry::ImageRegistry() {
     define(ImageKey::app, ":/images/app.ico");
+    define(ImageKey::settings, ":/images/settings.png");
 
     define(ImageKey::prop, ":/images/prop.png");
     define(ImageKey::data, ":/images/data.png");

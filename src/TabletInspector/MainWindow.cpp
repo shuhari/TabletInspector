@@ -2,6 +2,7 @@
 #include "MainWindow.h"
 #include "Resources.h"
 #include "Public.h"
+#include "SettingsDialog.h"
 
 
 MainWindow::MainWindow(QWidget *parent) : 
@@ -31,13 +32,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::createActions() {
     _actions[fileExit] = new QAction(tr("E&xit"));
-    connect(_actions[fileExit], &QAction::triggered, this, &MainWindow::onFileExit);
-
     _actions[viewStatusBar] = new QAction(tr("&Status Bar"));
     _actions[viewStatusBar]->setCheckable(true);
-    connect(_actions[viewStatusBar], &QAction::triggered, this, &MainWindow::onViewStatusBar);
-
+    _actions[toolSettings] = new QAction(tr("&Settings..."));
+    _actions[toolSettings]->setIcon(ImageRegistry::icon(ImageKey::settings));
     _actions[helpAbout] = new QAction(tr("&About"));
+
+    connect(_actions[fileExit], &QAction::triggered, this, &MainWindow::onFileExit);
+    connect(_actions[viewStatusBar], &QAction::triggered, this, &MainWindow::onViewStatusBar);
+    connect(_actions[toolSettings], &QAction::triggered, this, &MainWindow::onToolSettings);
     connect(_actions[helpAbout], &QAction::triggered, this, &MainWindow::onHelpAbout);
 }
 
@@ -87,6 +90,8 @@ void MainWindow::createToolBar() {
     toolbar->addAction(_actions[viewProp]);
     toolbar->addAction(_actions[viewData]);
     toolbar->addAction(_actions[viewLogs]);
+    toolbar->addSeparator();
+    toolbar->addAction(_actions[toolSettings]);
 
     _actions[viewToolBar] = toolbar->toggleViewAction();
 }
@@ -117,11 +122,15 @@ void MainWindow::createMenuBar() {
     viewMenu->addAction(_actions[viewData]);
     viewMenu->addAction(_actions[viewLogs]);
 
+    auto toolMenu = new QMenu(tr("&Tools"));
+    toolMenu->addAction(_actions[toolSettings]);
+
     auto helpMenu = new QMenu(tr("&Help"));
     helpMenu->addAction(_actions[helpAbout]);
 
     bar->addMenu(fileMenu);
     bar->addMenu(viewMenu);
+    bar->addMenu(toolMenu);
     bar->addMenu(helpMenu);
 }
 
@@ -157,6 +166,13 @@ void MainWindow::onViewStatusBar() {
     bool visible = !bar->isVisible();
     bar->setVisible(visible);
     _actions[viewStatusBar]->setChecked(visible);
+}
+
+
+void MainWindow::onToolSettings() {
+    SettingsDialog dlg(this);
+    if (dlg.exec() == QDialog::Accepted) {
+    }
 }
 
 

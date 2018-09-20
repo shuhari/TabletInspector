@@ -5,7 +5,7 @@
 
 
 enum ImageKey {
-    app = 1,
+    app = 1, settings = 2,
     
     prop = 11, data = 12, logs = 13,
 

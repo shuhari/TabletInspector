@@ -10,5 +10,6 @@
         <file alias="error.png">images/error.png</file>
         <file alias="connected.png">images/connected.png</file>
         <file alias="disconnected.png">images/disconnected.png</file>
+        <file alias="settings.png">images/settings.png</file>
     </qresource>
 </RCC>
