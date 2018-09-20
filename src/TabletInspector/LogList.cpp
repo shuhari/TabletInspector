@@ -19,11 +19,6 @@ LogList::LogList(QWidget* parent)
     connect(_acClear, &QAction::triggered, this, &LogList::onClear);
     addAction(_acClear);
     setContextMenuPolicy(Qt::ActionsContextMenu);
-
-    debug("Test debug");
-    info("Test info");
-    warn("Test warn");
-    error("Test error");
 }
 
 

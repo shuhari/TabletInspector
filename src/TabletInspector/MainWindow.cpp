@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "MainWindow.h"
 #include "Resources.h"
+#include "Public.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)  {
     
+
     setWindowTitle(tr("Tablet Inspector"));
     setWindowIcon(ImageRegistry::icon(ImageKey::app));
     setMinimumSize(800, 600);
@@ -16,6 +18,13 @@ MainWindow::MainWindow(QWidget *parent)
     createToolBar();
     createStatusBar();
     createMenuBar();
+
+    _usbDetector = new UsbDetector(this, GUID_DEVINTERFACE_TABLET_WINUSB);
+    connect(_usbDetector, &UsbDetector::deviceConnected, this, &MainWindow::onDeviceConnected);
+    connect(_usbDetector, &UsbDetector::deviceDisconnected, this, &MainWindow::onDeviceDisconnected);
+
+    qApp->installNativeEventFilter(this);
+    _usbDetector->detectOnStartUp();
 }
 
 
@@ -112,6 +121,16 @@ void MainWindow::createMenuBar() {
 }
 
 
+bool MainWindow::nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
+    
+    MSG *msg = (MSG*)message;
+    if (msg->message == WM_DEVICECHANGE && _usbDetector != nullptr) {
+        _usbDetector->detectOnDeviceChangeEvent(*msg);
+    }
+    return false;
+}
+
+
 void MainWindow::onFileExit() {
     close();
 }
@@ -127,4 +146,16 @@ void MainWindow::onViewStatusBar() {
 
 void MainWindow::onHelpAbout() {
 
+}
+
+
+void MainWindow::onDeviceConnected(const QString& devicePath) {
+    _logList->info(tr("Tablet connected: %1").arg(devicePath));
+    _connectionIndicator->setConnected(devicePath);
+}
+
+
+void MainWindow::onDeviceDisconnected(const QString& devicePath) {
+    _logList->info(tr("Tablet disconnected: %1").arg(devicePath));
+    _connectionIndicator->setDisconnected();
 }
