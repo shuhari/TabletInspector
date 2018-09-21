@@ -25,7 +25,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_usbDetector, &UsbDetector::deviceConnected, this, &MainWindow::onDeviceConnected);
     connect(_usbDetector, &UsbDetector::deviceDisconnected, this, &MainWindow::onDeviceDisconnected);
 
-    qApp->installNativeEventFilter(this);
     _usbDetector->detectOnStartUp();
 }
 
@@ -135,24 +134,19 @@ void MainWindow::createMenuBar() {
 }
 
 
-/*bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) {
+bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result) {
 
-    MSG *msg = (MSG*)message;
-    return false;
-}*/
-
-void MainWindow::closeEvent(QCloseEvent* event) {
-    closeReader();
-    event->accept();
-}
-
-bool MainWindow::nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
-    
     MSG *msg = (MSG*)message;
     if (msg->message == WM_DEVICECHANGE && _usbDetector != nullptr) {
         _usbDetector->detectOnDeviceChangeEvent(*msg);
     }
     return false;
+}
+
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+    closeReader();
+    event->accept();
 }
 
 

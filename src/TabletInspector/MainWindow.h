@@ -10,19 +10,15 @@
 #include "TabletInfoPage.h"
 
 
-class MainWindow : public QMainWindow, 
-    public QAbstractNativeEventFilter {
+class MainWindow : public QMainWindow {
 
     Q_OBJECT
 public:
     MainWindow(QWidget *parent = Q_NULLPTR);
     virtual ~MainWindow() = default;
 
-    virtual bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override;
-
-// override nativeEvent() caught wrong message. Don't know why, but inherit QAbstractNativeEventFilter works.
  protected:
- //   virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
+    virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
     virtual void closeEvent(QCloseEvent *event) override;
 
 private:
