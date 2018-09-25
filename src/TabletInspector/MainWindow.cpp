@@ -53,12 +53,16 @@ void MainWindow::createCentral() {
 void MainWindow::createDocks() {
     _logList = new LogList();
     _tabletInfoPage = new TabletInfoPage();
+    _packetCtrl = new PacketDataCtrl();
 
     auto propTab = new QTabWidget();
     propTab->addTab(_tabletInfoPage, tr("Tablet Information"));
 
+    auto dataTab = new QTabWidget();
+    dataTab->addTab(_packetCtrl, tr("Packet"));
+
     auto leftDock = newDock(tr("Information"), propTab, Qt::LeftDockWidgetArea);
-    auto rightDock = newDock(tr("Data"), nullptr, Qt::RightDockWidgetArea);
+    auto rightDock = newDock(tr("Data"), dataTab, Qt::RightDockWidgetArea);
     auto bottomDock = newDock(tr("Logs"), _logList, Qt::BottomDockWidgetArea);
 
     _actions[viewProp] = leftDock->toggleViewAction();
@@ -186,6 +190,11 @@ void MainWindow::onDeviceConnected(const QString& devicePath) {
         auto& tabletInfo = reader->tabletInfo();
         _connectionIndicator->setConnected(tabletInfo.model);
         _tabletInfoPage->setInfo(&tabletInfo);
+
+        _readThread = new ReadDataThread(_usbReader);
+        connect(_readThread, &ReadDataThread::readData, this, &MainWindow::onReadData);
+        connect(_readThread, &ReadDataThread::readError, this, &MainWindow::onReadError);
+        _readThread->start();
     }
 }
 
@@ -196,6 +205,10 @@ void MainWindow::onDeviceDisconnected(const QString& devicePath) {
     _logList->info(tr("Tablet disconnected: %1").arg(devicePath));
     _connectionIndicator->setDisconnected();
     _tabletInfoPage->setInfo(nullptr);
+
+    if (_readThread) {
+        _readThread->requestInterruption();
+    }
 }
 
 
@@ -205,4 +218,15 @@ void MainWindow::closeReader() {
         delete _usbReader;
         _usbReader = nullptr;
     }
+}
+
+
+void MainWindow::onReadData(const QByteArray& ba) {
+    _packetCtrl->addData(ba);
+}
+
+
+void MainWindow::onReadError(DWORD dwError) {
+    QString msg = tr("Read data error: %1").arg(dwError);
+    _logList->error(msg);
 }

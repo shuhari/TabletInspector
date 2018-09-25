@@ -109,3 +109,8 @@ bool UsbReader::parse_202(const BYTE* pBuf) {
     _tabletInfo.company = QString::fromWCharArray(pStart, endIndex);
     return true;
 }
+
+
+bool UsbReader::read(UsbBuffer& ub) {
+    return _usb.readPipe(_pipeInfo.PipeId, ub);
+}

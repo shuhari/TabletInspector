@@ -16,6 +16,7 @@ public:
     void close();
 
     inline TabletInfo& tabletInfo() { return _tabletInfo; }
+    bool read(win32::UsbBuffer& ub);
 
 private:
     TabletInfo                  _tabletInfo;

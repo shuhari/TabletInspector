@@ -8,6 +8,8 @@
 #include "UsbDetector.h"
 #include "UsbReader.h"
 #include "TabletInfoPage.h"
+#include "ReadDataThread.h"
+#include "PacketDataCtrl.h"
 
 
 class MainWindow : public QMainWindow {
@@ -34,9 +36,11 @@ private:
     ConnectionIndicator*    _connectionIndicator;
     LogList*                _logList;
     TabletInfoPage*         _tabletInfoPage;
+    PacketDataCtrl*         _packetCtrl;
 
     UsbDetector*            _usbDetector;
     UsbReader*              _usbReader;
+    ReadDataThread*         _readThread;
 
     void createActions();
     void createToolBar();
@@ -56,4 +60,6 @@ private slots:
 
     void        onDeviceConnected(const QString& devicePath);
     void        onDeviceDisconnected(const QString& devicePath);
+    void        onReadData(const QByteArray& ba);
+    void        onReadError(DWORD dwError);
 };
