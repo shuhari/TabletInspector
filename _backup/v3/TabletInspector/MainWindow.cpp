@@ -63,6 +63,7 @@ void MainWindow::createDocks() {
 
     auto leftDock = newDock(tr("Information"), propTab, Qt::LeftDockWidgetArea);
     auto rightDock = newDock(tr("Data"), dataTab, Qt::RightDockWidgetArea);
+    rightDock->setMinimumWidth(400);
     auto bottomDock = newDock(tr("Logs"), _logList, Qt::BottomDockWidgetArea);
 
     _actions[viewProp] = leftDock->toggleViewAction();
@@ -78,8 +79,8 @@ void MainWindow::createDocks() {
 
 QDockWidget* MainWindow::newDock(const QString& title, QWidget* widget, Qt::DockWidgetArea area) {
     auto dock = new QDockWidget(title, this);
-    dock->setFeatures(QDockWidget::DockWidgetClosable);
-    dock->setAllowedAreas(area);
+    dock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
+    dock->setAllowedAreas(Qt::AllDockWidgetAreas);
     if (widget)
         dock->setWidget(widget);
     addDockWidget(area, dock);
@@ -215,7 +216,7 @@ void MainWindow::onDeviceDisconnected(const QString& devicePath) {
 void MainWindow::closeReader() {
     if (_usbReader != nullptr) {
         _usbReader->close();
-        delete _usbReader;
+        // delete _usbReader;
         _usbReader = nullptr;
     }
 }
