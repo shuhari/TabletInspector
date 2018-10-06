@@ -39,6 +39,12 @@ VBoxLayoutDescriptor& VBoxLayoutDescriptor::add(QLayout* layout, int stretch) {
 }
 
 
+VBoxLayoutDescriptor& VBoxLayoutDescriptor::margin(int margin) {
+    _layout->setMargin(margin);
+    return *this;
+}
+
+
 VBoxLayoutDescriptor& VBoxLayoutDescriptor::apply(QWidget* parent) {
     parent->setLayout(_layout);
     return *this;
@@ -61,6 +67,11 @@ HBoxLayoutDescriptor& HBoxLayoutDescriptor::add(QLayout* layout, int stretch) {
     return *this;
 }
 
+
+HBoxLayoutDescriptor& HBoxLayoutDescriptor::margin(int margin) {
+    _layout->setMargin(margin);
+    return *this;
+}
 
 HBoxLayoutDescriptor& HBoxLayoutDescriptor::apply(QWidget* parent) {
     parent->setLayout(_layout);

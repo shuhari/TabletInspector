@@ -24,6 +24,7 @@ public:
 
     VBoxLayoutDescriptor& add(QWidget* widget, int stretch = 0);
     VBoxLayoutDescriptor& add(QLayout* layout, int stretch = 0);
+    VBoxLayoutDescriptor& margin(int margin);
     VBoxLayoutDescriptor& apply(QWidget* parent);
 
 private:
@@ -41,6 +42,7 @@ public:
 
     HBoxLayoutDescriptor& add(QWidget* widget, int stretch = 0);
     HBoxLayoutDescriptor& add(QLayout* layout, int stretch = 0);
+    HBoxLayoutDescriptor& margin(int margin);
     HBoxLayoutDescriptor& apply(QWidget* parent);
 
 private:

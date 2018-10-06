@@ -23,4 +23,5 @@ public:
     static QString general();
     static QString language();
     static QString settings();
+    static QString disconnected();
 };

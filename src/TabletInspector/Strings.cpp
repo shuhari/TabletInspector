@@ -19,3 +19,4 @@ QString Strings::actionHelpAbout()     { return tr("&About"); }
 QString Strings::settings() { return tr("Settings"); }
 QString Strings::general() { return tr("General"); }
 QString Strings::language() { return tr("Language"); }
+QString Strings::disconnected() { return tr("Disconnected"); }

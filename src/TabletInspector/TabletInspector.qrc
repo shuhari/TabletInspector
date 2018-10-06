@@ -2,5 +2,7 @@
     <qresource prefix="/images">
         <file alias="app.ico">images/app.ico</file>
         <file alias="settings.png">images/settings.png</file>
+        <file alias="connected.png">images/connected.png</file>
+        <file alias="disconnected.png">images/disconnected.png</file>
     </qresource>
 </RCC>

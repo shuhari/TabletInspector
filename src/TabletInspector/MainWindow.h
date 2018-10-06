@@ -1,6 +1,11 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
+
+#include <QtWidgets>
+#include "TabletDetector.h"
+#include "TabletReader.h"
+#include "ConnectionIndicator.h"
+
 
 class MainWindow : public QMainWindow
 {
@@ -9,6 +14,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow() = default;
+
+protected:
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
+    virtual void closeEvent(QCloseEvent* event) override;
 
 private:
     enum Actions {
@@ -22,6 +31,9 @@ private:
         helpAbout = 1101,
     };
     QMap<Actions, QAction*> _actions;
+    TabletDetector*         _tabletDetector;
+    TabletReader*           _tabletReader;
+    ConnectionIndicator*    _connectionIndicator;
 
     void createActions();
     void createMenuBar();
@@ -30,15 +42,22 @@ private:
     void createSideBars();
     void createCentral();
 
-    QAction* createAction(Actions key, const QString text, void (MainWindow::* slot)(),
+    QAction*    createAction(Actions key, const QString text, void (MainWindow::* slot)(),
         QIcon icon = QIcon(), bool checkable = false);
     QDockWidget* createDock(const QString& title,
         QWidget* widget,
         Qt::DockWidgetArea* initialArea);
+    void        onInitialUpdate();
+    void        stopReader();
 
 private slots:
     void        onFileExit();
     void        onViewStatusBar();
     void        onToolSettings();
     void        onHelpAbout();
+
+    void        onTabletConnected(const QString& devicePath);
+    void        onTabletDisconnected(const QString& devicePath);
+    void        onTabletReadData(const QByteArray& buffer);
+    void        onTabletReadError(DWORD dwError);
 };
