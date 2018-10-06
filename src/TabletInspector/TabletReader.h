@@ -29,6 +29,7 @@ public:
 
     void startRead();
     void stopRead();
+    bool waitQuit(int milliseconds);
 
 signals:
     void tabletReadData(const QByteArray& buffer);

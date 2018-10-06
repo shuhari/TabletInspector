@@ -70,6 +70,15 @@
     <ClCompile Include="TabletReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LogList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TabletInfoPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -108,6 +117,15 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TabletReader.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LogList.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Canvas.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TabletInfoPage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

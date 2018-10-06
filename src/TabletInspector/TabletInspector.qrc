@@ -4,5 +4,12 @@
         <file alias="settings.png">images/settings.png</file>
         <file alias="connected.png">images/connected.png</file>
         <file alias="disconnected.png">images/disconnected.png</file>
+        <file alias="debug.png">images/debug.png</file>
+        <file alias="info.png">images/info.png</file>
+        <file alias="warn.png">images/warn.png</file>
+        <file alias="error.png">images/error.png</file>
+        <file alias="logs.png">images/logs.png</file>
+        <file alias="prop.png">images/prop.png</file>
+        <file alias="data.png">images/data.png</file>
     </qresource>
 </RCC>

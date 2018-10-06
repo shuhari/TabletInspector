@@ -172,6 +172,7 @@ void TabletReader::startRead() {
 
 
 void TabletReader::stopRead() {
+    close();
     if (_thread) {
         _thread->requestInterruption();
     }
@@ -192,7 +193,15 @@ bool TabletReader::read(QByteArray& buffer, PULONG ulReaded) {
 void TabletReader::onThreadFinished() {
     if (_thread) {
         _thread->deleteLater();
+        _thread = nullptr;
     }
-    _thread = nullptr;
     deleteLater();
+}
+
+
+bool TabletReader::waitQuit(int milliseconds) {
+    if (_thread) {
+        return _thread->wait(milliseconds);
+    }
+    return false;
 }

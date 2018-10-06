@@ -17,10 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     setMinimumSize(800, 600);
 
     createActions();
-    createToolBar();
-    createStatusBar();
     createSideBars();
     createCentral();
+    createToolBar();
+    createStatusBar();
     createMenuBar();
 
     _tabletDetector = new TabletDetector(this, GUID_DEVINTERFACE_TABLET_WINUSB);
@@ -41,7 +41,7 @@ bool MainWindow::nativeEvent(const QByteArray& eventType, void* message, long* r
 
 
 void MainWindow::closeEvent(QCloseEvent* event) {
-    stopReader();
+    stopReader(true);
     event->accept();
 }
 
@@ -53,10 +53,12 @@ void MainWindow::onInitialUpdate() {
 }
 
 
-void MainWindow::stopReader() {
+void MainWindow::stopReader(bool wait) {
     if (_tabletReader) {
         // Reader delete itself when thread terminated
         _tabletReader->stopRead();
+        if (wait)
+            _tabletReader->waitQuit(5000);
         _tabletReader = nullptr;
     }
 }
@@ -92,6 +94,9 @@ void MainWindow::createActions() {
 void MainWindow::createToolBar() {
     auto toolbar = addToolBar(Strings::actionViewToolBar());
     
+    toolbar->addAction(_actions[viewLogs]);
+    toolbar->addAction(_actions[viewProp]);
+    toolbar->addAction(_actions[viewData]);
     toolbar->addSeparator();
     toolbar->addAction(_actions[toolSettings]);
 
@@ -109,13 +114,56 @@ void MainWindow::createStatusBar() {
 
 
 void MainWindow::createSideBars() {
+    _logList = new LogList();
+    _infoPage = new TabletInfoPage();
 
+    auto leftTab = new QTabWidget();
+    leftTab->setTabPosition(QTabWidget::South);
+    leftTab->addTab(_infoPage, Strings::tabletInfo());
+
+    auto rightTab = new QTabWidget();
+    rightTab->setTabPosition(QTabWidget::South);
+
+    auto bottomDock = createDock(Strings::logs(), _logList,
+        Qt::BottomDockWidgetArea, Qt::BottomDockWidgetArea,
+        viewLogs, Resources::logs());
+    auto leftDock = createDock(Strings::properties(), leftTab,
+        Qt::LeftDockWidgetArea, Qt::LeftDockWidgetArea,
+        viewProp, Resources::prop());
+    leftDock->setMinimumWidth(300);
+    auto rightDock = createDock(Strings::data(), rightTab,
+        Qt::RightDockWidgetArea, Qt::RightDockWidgetArea,
+        viewData, Resources::data());
+}
+
+
+QDockWidget* MainWindow::createDock(const QString& title,
+    QWidget* widget,
+    Qt::DockWidgetAreas allowAreas, Qt::DockWidgetArea initialArea,
+    Actions actionKey, QIcon actionIcon) {
+
+    auto dock = new QDockWidget(title, this);
+    dock->setFeatures(QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable);
+    dock->setAllowedAreas(allowAreas);
+    if (widget)
+        dock->setWidget(widget);
+    addDockWidget(initialArea, dock);
+
+    if (actionKey != Actions::None) {
+        auto toggleAction = dock->toggleViewAction();
+        if (!actionIcon.isNull())
+            toggleAction->setIcon(actionIcon);
+        _actions[actionKey] = toggleAction;
+    }
+    return dock;
 }
 
 
 void MainWindow::createCentral() {
-
+    _canvas = new Canvas();
+    setCentralWidget(_canvas);
 }
+
 
 void MainWindow::createMenuBar() {
     auto mainMenu = menuBar();
@@ -126,7 +174,10 @@ void MainWindow::createMenuBar() {
     SubMenu(mainMenu, Strings::menuView())
         .action(_actions[viewToolBar])
         .action(_actions[viewStatusBar])
-        .separator();
+        .separator()
+        .action(_actions[viewLogs])
+        .action(_actions[viewProp])
+        .action(_actions[viewData]);
 
     SubMenu(mainMenu, Strings::menuTool())
         .action(_actions[toolSettings]);
@@ -167,8 +218,11 @@ void MainWindow::onTabletConnected(const QString& devicePath) {
 
     auto reader = new TabletReader(this);
     if (reader->open(devicePath)) {
-        _tabletReader = reader;
         auto& tabletInfo = reader->info();
+        _logList->info(Strings::msg_tabletConnected().arg(devicePath));
+        _infoPage->setInfo(&tabletInfo);
+
+        _tabletReader = reader;
         _connectionIndicator->setConnected(tabletInfo.tabletName());
         connect(reader, &TabletReader::tabletReadData, this, &MainWindow::onTabletReadData);
         connect(reader, &TabletReader::tabletReadError, this, &MainWindow::onTabletReadError);
@@ -181,6 +235,8 @@ void MainWindow::onTabletConnected(const QString& devicePath) {
 
 void MainWindow::onTabletDisconnected(const QString& devicePath) {
     _connectionIndicator->setDisconnected();
+    _logList->warn(Strings::msg_tabletDisconnected().arg(devicePath));
+    _infoPage->setInfo(nullptr);
     stopReader();
 }
 
@@ -191,5 +247,6 @@ void MainWindow::onTabletReadData(const QByteArray& buffer) {
 
 
 void MainWindow::onTabletReadError(DWORD dwError) {
-
+    QString msg = Strings::msg_tabletReadError().arg(dwError);
+    _logList->error(msg);
 }
