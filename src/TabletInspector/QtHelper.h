@@ -25,6 +25,7 @@ public:
     VBoxLayoutDescriptor& add(QWidget* widget, int stretch = 0);
     VBoxLayoutDescriptor& add(QLayout* layout, int stretch = 0);
     VBoxLayoutDescriptor& margin(int margin);
+    VBoxLayoutDescriptor& addStretch(int stretch);
     VBoxLayoutDescriptor& apply(QWidget* parent);
 
 private:
@@ -50,8 +51,27 @@ private:
 };
 
 
+class GridLayoutDescriptor {
+public:
+    GridLayoutDescriptor();
+    GridLayoutDescriptor(const GridLayoutDescriptor&) = default;
+    GridLayoutDescriptor& operator=(const GridLayoutDescriptor&) = default;
+
+    GridLayoutDescriptor& add(QWidget* widget, int row, int col,
+        int rowSpan = 0, int colSpan = 0, Qt::Alignment align = Qt::AlignLeft);
+    GridLayoutDescriptor& add(QLayout* layout, int row, int col,
+        int rowSpan = 0, int colSpan = 0, Qt::Alignment align = Qt::AlignLeft);
+    GridLayoutDescriptor& apply(QWidget* parent);
+    inline QGridLayout* layout() { return _layout; }
+
+private:
+    QGridLayout*        _layout;
+};
+
+
 class Layout {
 public:
     static VBoxLayoutDescriptor vbox();
     static HBoxLayoutDescriptor hbox();
+    static GridLayoutDescriptor grid();
 };

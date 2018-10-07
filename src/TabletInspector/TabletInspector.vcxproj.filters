@@ -79,6 +79,12 @@
     <ClCompile Include="TabletInfoPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HexPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RealTimePage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -126,6 +132,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TabletInfoPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="HexPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="RealTimePage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

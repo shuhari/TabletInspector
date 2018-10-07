@@ -116,13 +116,17 @@ void MainWindow::createStatusBar() {
 void MainWindow::createSideBars() {
     _logList = new LogList();
     _infoPage = new TabletInfoPage();
+    _realTimePage = new RealTimePage();
+    _hexPage = new HexPage();
 
     auto leftTab = new QTabWidget();
     leftTab->setTabPosition(QTabWidget::South);
     leftTab->addTab(_infoPage, Strings::tabletInfo());
+    leftTab->addTab(_realTimePage, Strings::realTime());
 
     auto rightTab = new QTabWidget();
     rightTab->setTabPosition(QTabWidget::South);
+    rightTab->addTab(_hexPage, Strings::hex());
 
     auto bottomDock = createDock(Strings::logs(), _logList,
         Qt::BottomDockWidgetArea, Qt::BottomDockWidgetArea,
@@ -134,6 +138,7 @@ void MainWindow::createSideBars() {
     auto rightDock = createDock(Strings::data(), rightTab,
         Qt::RightDockWidgetArea, Qt::RightDockWidgetArea,
         viewData, Resources::data());
+    rightDock->setMinimumWidth(300);
 }
 
 
@@ -221,6 +226,7 @@ void MainWindow::onTabletConnected(const QString& devicePath) {
         auto& tabletInfo = reader->info();
         _logList->info(Strings::msg_tabletConnected().arg(devicePath));
         _infoPage->setInfo(&tabletInfo);
+        _realTimePage->setInfo(&tabletInfo);
 
         _tabletReader = reader;
         _connectionIndicator->setConnected(tabletInfo.tabletName());
@@ -237,12 +243,14 @@ void MainWindow::onTabletDisconnected(const QString& devicePath) {
     _connectionIndicator->setDisconnected();
     _logList->warn(Strings::msg_tabletDisconnected().arg(devicePath));
     _infoPage->setInfo(nullptr);
+    _realTimePage->setInfo(nullptr);
     stopReader();
 }
 
 
 void MainWindow::onTabletReadData(const QByteArray& buffer) {
-
+    _hexPage->addData(buffer);
+    _realTimePage->setData(buffer);
 }
 
 

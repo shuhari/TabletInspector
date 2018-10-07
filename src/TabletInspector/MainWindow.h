@@ -7,6 +7,8 @@
 #include "LogList.h"
 #include "Canvas.h"
 #include "TabletInfoPage.h"
+#include "HexPage.h"
+#include "RealTimePage.h"
 
 
 class MainWindow : public QMainWindow
@@ -44,6 +46,8 @@ private:
     LogList*                _logList;
     Canvas*                 _canvas;
     TabletInfoPage*         _infoPage;
+    RealTimePage*           _realTimePage;
+    HexPage*                _hexPage;
 
     void createActions();
     void createMenuBar();

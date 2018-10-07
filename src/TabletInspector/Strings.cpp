@@ -40,6 +40,11 @@ QString Strings::isMonitor() { return tr("Is Monitor"); }
 QString Strings::isPassive() { return tr("Is Passive"); }
 QString Strings::trueStr() { return tr("True"); }
 QString Strings::falseStr() { return tr("False"); }
+QString Strings::hex() { return tr("Hexadecimal"); }
+QString Strings::realTime() { return tr("Realtime"); }
+QString Strings::x() { return "X"; }
+QString Strings::y() { return "Y"; }
+QString Strings::pressure() { return tr("Pressure"); }
 
 QString Strings::msg_tabletConnected() { 
     return tr("Tablet connected, path: %1."); 

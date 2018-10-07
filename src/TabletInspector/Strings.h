@@ -44,6 +44,11 @@ public:
     static QString isPassive();
     static QString trueStr();
     static QString falseStr();
+    static QString hex();
+    static QString realTime();
+    static QString x();
+    static QString y();
+    static QString pressure();
 
     static QString msg_tabletConnected();
     static QString msg_tabletDisconnected();

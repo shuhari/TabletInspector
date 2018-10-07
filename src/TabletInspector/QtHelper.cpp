@@ -39,6 +39,12 @@ VBoxLayoutDescriptor& VBoxLayoutDescriptor::add(QLayout* layout, int stretch) {
 }
 
 
+VBoxLayoutDescriptor& VBoxLayoutDescriptor::addStretch(int stretch) {
+    _layout->addStretch(stretch);
+    return *this;
+}
+
+
 VBoxLayoutDescriptor& VBoxLayoutDescriptor::margin(int margin) {
     _layout->setMargin(margin);
     return *this;
@@ -79,6 +85,37 @@ HBoxLayoutDescriptor& HBoxLayoutDescriptor::apply(QWidget* parent) {
 }
 
 
+GridLayoutDescriptor::GridLayoutDescriptor() {
+    _layout = new QGridLayout();
+}
+
+
+GridLayoutDescriptor& GridLayoutDescriptor::add(QWidget* widget, 
+    int row, int col, int rowSpan, int colSpan, Qt::Alignment align) {
+    if (rowSpan == 0 && colSpan == 0)
+        _layout->addWidget(widget, row, col, align);
+    else
+        _layout->addWidget(widget, row, col, rowSpan, colSpan, align);
+    return *this;
+}
+
+
+GridLayoutDescriptor& GridLayoutDescriptor::add(QLayout* layout,
+    int row, int col, int rowSpan, int colSpan, Qt::Alignment align) {
+    if (rowSpan == 0 && colSpan == 0)
+        _layout->addLayout(layout, row, col, align);
+    else
+        _layout->addLayout(layout, row, col, rowSpan, colSpan, align);
+    return *this;
+}
+
+
+GridLayoutDescriptor& GridLayoutDescriptor::apply(QWidget* parent) {
+    parent->setLayout(_layout);
+    return *this;
+}
+
+
 VBoxLayoutDescriptor Layout::vbox() {
     return VBoxLayoutDescriptor();
 }
@@ -86,4 +123,9 @@ VBoxLayoutDescriptor Layout::vbox() {
 
 HBoxLayoutDescriptor Layout::hbox() {
     return HBoxLayoutDescriptor();
+}
+
+
+GridLayoutDescriptor Layout::grid() {
+    return GridLayoutDescriptor();
 }
