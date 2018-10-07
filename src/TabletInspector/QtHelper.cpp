@@ -22,6 +22,23 @@ SubMenu& SubMenu::separator() {
 }
 
 
+LabelPair::LabelPair(const QString& name) {
+    _nameLabel = new QLabel(name);
+    _valueLabel = new QLabel();
+}
+
+
+
+void LabelPair::setValue(const QString& value) {
+    _valueLabel->setText(value);
+}
+
+
+void LabelPair::clearValue() {
+    _valueLabel->clear();
+}
+
+
 VBoxLayoutDescriptor::VBoxLayoutDescriptor() {
     _layout = new QVBoxLayout();
 }
@@ -106,6 +123,13 @@ GridLayoutDescriptor& GridLayoutDescriptor::add(QLayout* layout,
         _layout->addLayout(layout, row, col, align);
     else
         _layout->addLayout(layout, row, col, rowSpan, colSpan, align);
+    return *this;
+}
+
+
+GridLayoutDescriptor& GridLayoutDescriptor::add(LabelPair* pair, int row, int col, Qt::Alignment align) {
+    _layout->addWidget(pair->nameLabel(), row, col, Qt::AlignLeft);
+    _layout->addWidget(pair->valueLabel(), row, col + 1, align);
     return *this;
 }
 

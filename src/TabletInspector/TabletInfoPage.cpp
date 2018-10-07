@@ -19,7 +19,7 @@ TabletInfoPage::TabletInfoPage(QWidget* parent) :
 
 void TabletInfoPage::setInfo(TabletInfo* info) {
     if (info) {
-        setRowCount(14);
+        setRowCount(13);
         int row = 0;
         QString size = QString("%1 x %2").arg(info->size.width())
             .arg(info->size.height());
@@ -35,7 +35,8 @@ void TabletInfoPage::setInfo(TabletInfo* info) {
         setRow(row++, Strings::lpi(), formatInt(info->lpi), true);
         setRow(row++, Strings::rate(), formatInt(info->rate), true);
         setRow(row++, Strings::isMonitor(), formatBool(info->isMonitor));
-        setRow(row++, Strings::isPassive(), formatBool(info->isPassive));
+        setRow(row++, Strings::isPassive(), info->isPassive ? Strings::passive() :
+            Strings::unPassive());
         resizeColumnsToContents();
     } else {
         setRowCount(0);

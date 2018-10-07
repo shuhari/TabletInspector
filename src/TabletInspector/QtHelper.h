@@ -14,6 +14,22 @@ private:
 };
 
 
+struct LabelPair {
+public:
+    LabelPair(const QString& name);
+
+    inline QLabel* nameLabel() { return _nameLabel; }
+    inline QLabel* valueLabel() { return _valueLabel; }
+    
+    void setValue(const QString& value);
+    void clearValue();
+
+private:
+    QLabel* _nameLabel;
+    QLabel* _valueLabel;
+};
+
+
 class VBoxLayoutDescriptor {
 public:
     VBoxLayoutDescriptor();
@@ -61,7 +77,9 @@ public:
         int rowSpan = 0, int colSpan = 0, Qt::Alignment align = Qt::AlignLeft);
     GridLayoutDescriptor& add(QLayout* layout, int row, int col,
         int rowSpan = 0, int colSpan = 0, Qt::Alignment align = Qt::AlignLeft);
+    GridLayoutDescriptor& add(LabelPair* pair, int row, int col, Qt::Alignment = Qt::AlignLeft);
     GridLayoutDescriptor& apply(QWidget* parent);
+
     inline QGridLayout* layout() { return _layout; }
 
 private:
@@ -75,3 +93,4 @@ public:
     static HBoxLayoutDescriptor hbox();
     static GridLayoutDescriptor grid();
 };
+

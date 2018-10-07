@@ -45,6 +45,16 @@ QString Strings::realTime() { return tr("Realtime"); }
 QString Strings::x() { return "X"; }
 QString Strings::y() { return "Y"; }
 QString Strings::pressure() { return tr("Pressure"); }
+QString Strings::passive() { return tr("Passive"); }
+QString Strings::unPassive() { return tr("Unpassive"); }
+QString Strings::pen() { return tr("Pen"); }
+QString Strings::penBtn() { return tr("Pen Button"); }
+QString Strings::penDown() { return tr("Pen down"); }
+QString Strings::penBtnDown() { return tr("Button %1 down"); }
+QString Strings::touchBtn() { return tr("Touch Button"); }
+QString Strings::touchBtnDown() { return tr("Button %1 down"); }
+QString Strings::sliderPress() { return tr("Slider %1 pressed"); }
+QString Strings::slider() { return tr("Slider"); }
 
 QString Strings::msg_tabletConnected() { 
     return tr("Tablet connected, path: %1."); 

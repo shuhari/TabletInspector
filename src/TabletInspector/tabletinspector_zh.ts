@@ -189,17 +189,27 @@
         <translation type="unfinished">压感</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="50"/>
+        <location filename="Strings.cpp" line="48"/>
+        <source>Passive</source>
+        <translation type="unfinished">无源</translation>
+    </message>
+    <message>
+        <location filename="Strings.cpp" line="49"/>
+        <source>Unpassive</source>
+        <translation type="unfinished">有源</translation>
+    </message>
+    <message>
+        <location filename="Strings.cpp" line="52"/>
         <source>Tablet connected, path: %1.</source>
         <translation type="unfinished">数位板已连接，路径：%1。</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="53"/>
+        <location filename="Strings.cpp" line="55"/>
         <source>Tablet disconnected, path: %1.</source>
         <translation type="unfinished">数位板已断开，路径：%1。</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="56"/>
+        <location filename="Strings.cpp" line="58"/>
         <source>Tablet read error, code: %1.</source>
         <translation type="unfinished">数位板读取错误，代码：%1。</translation>
     </message>

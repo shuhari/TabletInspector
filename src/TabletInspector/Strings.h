@@ -49,6 +49,16 @@ public:
     static QString x();
     static QString y();
     static QString pressure();
+    static QString passive();
+    static QString unPassive();
+    static QString pen();
+    static QString penBtn();
+    static QString penDown();
+    static QString penBtnDown();
+    static QString touchBtn();
+    static QString touchBtnDown();
+    static QString slider();
+    static QString sliderPress();
 
     static QString msg_tabletConnected();
     static QString msg_tabletDisconnected();
