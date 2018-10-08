@@ -1,4 +1,0 @@
-#pragma once
-
-extern GUID GUID_DEVINTERFACE_TABLET_WINUSB;
-
