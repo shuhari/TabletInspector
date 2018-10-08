@@ -247,12 +247,12 @@
     <message>
         <location filename="Strings.cpp" line="60"/>
         <source>Analytics</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">分析</translation>
     </message>
     <message>
         <location filename="Strings.cpp" line="61"/>
         <source>Raw Data</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">原始数据</translation>
     </message>
     <message>
         <location filename="Strings.cpp" line="69"/>

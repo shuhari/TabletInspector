@@ -8,9 +8,13 @@
 PenDataModel::PenDataModel(QObject* parent) :
     QAbstractListModel(parent) {
 
-    _brushes[None] = QBrush(QColor(255, 255, 255));
+    _brushes[Default] = QBrush(QColor(255, 255, 255));
+    _brushes[Invalid] = QBrush(QColor(255, 128, 128));
     _brushes[PenDown] = QBrush(QColor(0, 128, 0));
-    _brushes[PenBtnDown] = QBrush(QColor(128, 128, 0));
+    _brushes[PenUp] = QBrush(QColor(255, 255, 255));
+    _brushes[PenBtnDown] = QBrush(QColor(255, 255, 128));
+    _brushes[Touch] = QBrush(QColor(128, 255, 255));
+    _brushes[Slider] = QBrush(QColor(255, 128, 255));
 }
 
 
@@ -62,15 +66,26 @@ QVariant PenDataModel::data(const QModelIndex &index, int role) const {
 
 PenDataModel::ItemType PenDataModel::getItemType(const QByteArray& data) const {
     if (data.size() < 2)
-        return None;
+        return Invalid;
     if (data[0] != 0x08)
-        return None;
+        return Invalid;
     BYTE flag = data[1];
+    if ((flag & 0x80) != 0x80)
+        return Invalid;
+
+    if (flag == 0xE0)
+        return Touch;
+    if (flag == 0xF0)
+        return Slider;
+
     if ((flag & 0x81) == 0x81)
         return PenDown;
     if ((flag & 0x82) == 0x82 || (flag & 0x84) == 0x84)
         return PenBtnDown;
-    return None;
+    if (flag == 0x80)
+        return PenUp;
+
+    return Default;
 }
 
 
@@ -81,7 +96,7 @@ bool PenDataModel::getAnalyticsRange(QModelIndex index, int& nMin, int& nMax) {
     for (int i = index.row() - 1; i >= 0; i--) {
         QByteArray& data = _datas[i];
         ItemType itemType = getItemType(data);
-        if (itemType == None) {
+        if (itemType == Default || itemType == Invalid) {
             nMin = i + 1;
             break;
         }
@@ -90,7 +105,7 @@ bool PenDataModel::getAnalyticsRange(QModelIndex index, int& nMin, int& nMax) {
     for (int i = index.row() + 1; i < _datas.size(); i++) {
         QByteArray& data = _datas[i];
         ItemType itemType = getItemType(data);
-        if (itemType == None) {
+        if (itemType == Default || itemType == Invalid) {
             nMax = i;
             break;
         }

@@ -20,9 +20,13 @@ public:
 private:
     QList<QByteArray> _datas;
     enum ItemType {
-        None = 0,
-        PenDown = 1,
-        PenBtnDown = 2,
+        Default = 0,
+        Invalid = 1,
+        PenDown = 2,
+        PenUp = 3,
+        PenBtnDown = 4,
+        Touch = 5,
+        Slider = 6,
     };
     QMap<ItemType, QBrush> _brushes;
 
