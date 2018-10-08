@@ -15,3 +15,4 @@ QIcon Resources::clear() { return QIcon(":/images/clear.png"); }
 
 QPixmap Resources::connected() { return QPixmap(":/images/connected.png"); }
 QPixmap Resources::disconnected() { return QPixmap(":/images/disconnected.png"); }
+QPixmap Resources::appIconPixmap() { return QPixmap(":/images/app.ico"); }

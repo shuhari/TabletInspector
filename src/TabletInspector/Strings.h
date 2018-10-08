@@ -66,6 +66,7 @@ public:
     static QString ay();
     static QString altitude();
     static QString azimuth();
+    static QString aboutTitle();
 
     static QString msg_tabletConnected();
     static QString msg_tabletDisconnected();

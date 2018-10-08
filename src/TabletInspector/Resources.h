@@ -16,4 +16,5 @@ public:
 
     static QPixmap connected();
     static QPixmap disconnected();
+    static QPixmap appIconPixmap();
 };

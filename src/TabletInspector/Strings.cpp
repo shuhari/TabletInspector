@@ -64,6 +64,7 @@ QString Strings::ax() { return "ax"; }
 QString Strings::ay() { return "ay"; }
 QString Strings::altitude() { return "Altitude"; }
 QString Strings::azimuth() { return "Azimuth"; }
+QString Strings::aboutTitle() { return tr("About %1"); }
 
 QString Strings::msg_tabletConnected() { 
     return tr("Tablet connected, path: %1."); 

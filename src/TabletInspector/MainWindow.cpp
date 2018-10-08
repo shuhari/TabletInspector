@@ -4,6 +4,7 @@
 #include "Resources.h"
 #include "QtHelper.h"
 #include "SettingsDialog.h"
+#include "AboutDialog.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -235,7 +236,8 @@ void MainWindow::onToolSettings() {
 
 
 void MainWindow::onHelpAbout() {
-
+    AboutDialog dlg(this);
+    dlg.exec();
 }
 
 

@@ -131,6 +131,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutDialog.cpp" />
     <ClCompile Include="AnalyticsDialog.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AppSettings.cpp" />
@@ -228,6 +229,8 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtCharts</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
     </QtMoc>
+    <ClInclude Include="AboutDialog.h" />
+    <ClInclude Include="AppVersion.h" />
     <ClInclude Include="Public.h" />
     <ClInclude Include="QtHelper.h" />
     <QtMoc Include="RealTimePage.h">

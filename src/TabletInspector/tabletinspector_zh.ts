@@ -255,22 +255,27 @@
         <translation type="unfinished">原始数据</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="69"/>
+        <location filename="Strings.cpp" line="67"/>
+        <source>About %1</source>
+        <translation type="unfinished">关于 %1</translation>
+    </message>
+    <message>
+        <location filename="Strings.cpp" line="70"/>
         <source>Tablet connected, path: %1.</source>
         <translation type="unfinished">数位板已连接，路径：%1。</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="72"/>
+        <location filename="Strings.cpp" line="73"/>
         <source>Tablet disconnected, path: %1.</source>
         <translation type="unfinished">数位板已断开，路径：%1。</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="75"/>
+        <location filename="Strings.cpp" line="76"/>
         <source>Tablet read error, code: %1.</source>
         <translation type="unfinished">数位板读取错误，代码：%1。</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="78"/>
+        <location filename="Strings.cpp" line="79"/>
         <source>Open tablet failed, error: %1.
 
 If Other programs such as driver is running, please close it first to use TabletInspector.</source>
