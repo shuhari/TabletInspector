@@ -88,6 +88,9 @@
     <ClCompile Include="Models.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AnalyticsDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -144,6 +147,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Models.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AnalyticsDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

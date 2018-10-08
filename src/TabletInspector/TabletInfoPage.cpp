@@ -13,6 +13,7 @@ TabletInfoPage::TabletInfoPage(QWidget* parent) :
     setSelectionMode(QAbstractItemView::SingleSelection);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     setFont(QFont("Tahoma", 9));
+
     notifyTablet(nullptr);
 }
 

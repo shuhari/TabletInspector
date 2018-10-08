@@ -12,6 +12,24 @@ QString TabletInfo::tabletName() {
 }
 
 
+void TabletInfo::copyFrom(TabletInfo& src) {
+    devicePath = src.devicePath;
+    oem = src.oem;
+    model = src.model;
+    fixtureDate = src.fixtureDate;
+    company = src.company;
+    size = src.size;
+    maxPressure = src.maxPressure;
+    pBtnNum = src.pBtnNum;
+    sBtnNum = src.sBtnNum;
+    hBtnNum = src.hBtnNum;
+    lpi = src.lpi;
+    rate = src.rate;
+    isMonitor = src.isMonitor;
+    isPassive = src.isPassive;
+}
+
+
 DataParser::DataParser(const QByteArray& data) :
     _data(data) {
     _dataType = getDataType();
@@ -71,4 +89,18 @@ int DataParser::penBtnIndex() {
     else if (sign == 0x84)
         return 1;
     return -1;
+}
+
+
+QPoint DataParser::tilt() {
+    BYTE ax = (BYTE)_data[10];
+    BYTE ay = (BYTE)_data[11];
+    return QPoint(ax, ay);
+}
+
+
+QPoint DataParser::convertToPolar(QPoint tilt) {
+    long altitude = (long)(90 - sqrt((tilt.x() * tilt.x()) + (tilt.y() * tilt.y()))) * 10;
+    long azimuth = (long)(1800 + 1800 * atan2(-tilt.x(), -tilt.y()) / 3.14159);//TanHuang arithmetic
+    return QPoint(altitude, azimuth);
 }

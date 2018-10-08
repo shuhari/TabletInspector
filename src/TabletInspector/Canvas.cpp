@@ -13,6 +13,7 @@ Canvas::Canvas(QWidget* parent) :
     _isPenDown(false),
     _currentStroke(nullptr) {
 
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _backBrush = QBrush(QColor::fromRgb(255, 255, 255));
     _inBrush = QBrush(QColor(192, 192, 192));
     _strokePen = QPen(QColor::fromRgb(0, 0, 0));
@@ -122,4 +123,15 @@ void Canvas::clearData() {
         delete stroke;
     }
     _strokes.clear();
+}
+
+
+void Canvas::loadData(PenDataModel* model) {
+    auto stroke = new CanvasStroke();
+    for (int i = 0; i < model->rowCount(); i++) {
+        const QByteArray& data = model->at(i);
+        QPoint point = DataParser(data).position();
+        stroke->append(point);
+    }
+    _strokes.append(stroke);
 }

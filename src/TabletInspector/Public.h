@@ -18,6 +18,7 @@ struct TabletInfo {
     bool        isPassive;
 
     QString tabletName();
+    void copyFrom(TabletInfo& src);
 };
 
 
@@ -44,6 +45,8 @@ public:
     QPoint position();
     int pressure();
     int penBtnIndex();
+    QPoint tilt();
+    QPoint convertToPolar(QPoint tilt);
 
 private:
     const QByteArray& _data;

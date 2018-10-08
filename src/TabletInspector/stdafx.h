@@ -13,3 +13,6 @@
 #include <QtCore>
 #include <QtGui>
 #include <QtWidgets>
+#include <QtCharts>
+#include <QChartView>
+#include <QLineSeries>

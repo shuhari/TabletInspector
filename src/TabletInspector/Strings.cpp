@@ -57,6 +57,13 @@ QString Strings::touchBtn() { return tr("Touch Button"); }
 QString Strings::touchBtnDown() { return tr("Button %1 down"); }
 QString Strings::sliderPress() { return tr("Slider %1 pressed"); }
 QString Strings::slider() { return tr("Slider"); }
+QString Strings::analytics() { return tr("Analytics"); }
+QString Strings::rawData() { return tr("Raw Data"); }
+// Not sure how to translate, temp keep untranslated
+QString Strings::ax() { return "ax"; }
+QString Strings::ay() { return "ay"; }
+QString Strings::altitude() { return "Altitude"; }
+QString Strings::azimuth() { return "Azimuth"; }
 
 QString Strings::msg_tabletConnected() { 
     return tr("Tablet connected, path: %1."); 

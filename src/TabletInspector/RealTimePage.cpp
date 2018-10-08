@@ -45,11 +45,10 @@ void RealTimePage::setupUi() {
         .add(_penPair, 4, 0)
         .add(_penBtnPair, 5, 0)
         .add(_touchPair, 6, 0)
-        .add(_sliderPair, 7, 0)
-        .layout();
+        .add(_sliderPair, 7, 0);
 
     auto vbox = Layout::vbox()
-        .add(grid)
+        .add(grid.layout())
         .addStretch(1)
         .apply(this);
 }

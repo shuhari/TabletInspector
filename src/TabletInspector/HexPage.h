@@ -17,6 +17,12 @@ public:
     void clearTabletData() override;
 
 private:
-    PenDataModel* dataModel();
+    QAction*        _acAnalytics;
+    TabletInfo*     _info;
+    PenDataModel*   dataModel();
+    QMainWindow*    getMainWindow();
+
+private slots:
+    void            onAnalytics();
 };
 

@@ -12,6 +12,10 @@ public:
 
     void add(const QByteArray& data);
     void clear();
+    bool getAnalyticsRange(QModelIndex index, int& nMin, int& nMax);
+    PenDataModel* slice(int nMin, int nMax);
+    const QByteArray& at(int row);
+    QString toHex(const QByteArray& data) const;
 
 private:
     QList<QByteArray> _datas;

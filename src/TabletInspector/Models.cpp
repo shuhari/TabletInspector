@@ -2,7 +2,7 @@
 #include "Models.h"
 
 
-#define MAX_ITEMS    100
+#define MAX_ITEMS    300
 
 
 PenDataModel::PenDataModel(QObject* parent) :
@@ -48,18 +48,14 @@ QVariant PenDataModel::data(const QModelIndex &index, int role) const {
 
     QByteArray data = _datas[index.row()];
     if (role == Qt::DisplayRole) {
-        char hexStr[200] = { 0 };
-        ZeroMemory(hexStr, sizeof(hexStr));
-        char* pNext = hexStr;
-        for (BYTE b : data) {
-            wsprintfA(pNext, "%02X ", b);
-            pNext += 3;
-        }
-        return QString(hexStr);
+        return toHex(data);
     } else if (role == Qt::BackgroundRole) {
         ItemType itemType = getItemType(data);
         return _brushes[itemType];
+    } else if (role == Qt::UserRole) {
+        return _datas[index.row()];
     }
+    
     return QVariant();
 }
 
@@ -77,3 +73,58 @@ PenDataModel::ItemType PenDataModel::getItemType(const QByteArray& data) const {
     return None;
 }
 
+
+bool PenDataModel::getAnalyticsRange(QModelIndex index, int& nMin, int& nMax) {
+    nMin = index.row();
+    nMax = index.row();
+
+    for (int i = index.row() - 1; i >= 0; i--) {
+        QByteArray& data = _datas[i];
+        ItemType itemType = getItemType(data);
+        if (itemType == None) {
+            nMin = i + 1;
+            break;
+        }
+    }
+
+    for (int i = index.row() + 1; i < _datas.size(); i++) {
+        QByteArray& data = _datas[i];
+        ItemType itemType = getItemType(data);
+        if (itemType == None) {
+            nMax = i;
+            break;
+        }
+    }
+
+    return nMax >= nMin;
+}
+
+
+
+PenDataModel* PenDataModel::slice(int nMin, int nMax) {
+    nMin = qMax(0, nMin);
+    nMax = qMin(_datas.size() - 1, nMax);
+
+    auto result = new PenDataModel();
+    for (int i = nMin; i <= nMax; i++) {
+        result->_datas.append(_datas[i]);
+    }
+    return result;
+}
+
+
+QString PenDataModel::toHex(const QByteArray& data) const {
+    char hexStr[200] = { 0 };
+    ZeroMemory(hexStr, sizeof(hexStr));
+    char* pNext = hexStr;
+    for (BYTE b : data) {
+        wsprintfA(pNext, "%02X ", b);
+        pNext += 3;
+    }
+    return QString(hexStr);
+}
+
+
+const QByteArray& PenDataModel::at(int row) {
+    return _datas[row];
+}

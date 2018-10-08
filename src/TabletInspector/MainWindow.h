@@ -21,6 +21,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow() = default;
 
+    inline PenDataModel* dataModel() { return _penDataModel; }
+
 protected:
     virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
     virtual void closeEvent(QCloseEvent* event) override;

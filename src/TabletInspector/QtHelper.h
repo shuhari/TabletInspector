@@ -74,10 +74,10 @@ public:
     GridLayoutDescriptor& operator=(const GridLayoutDescriptor&) = default;
 
     GridLayoutDescriptor& add(QWidget* widget, int row, int col,
-        int rowSpan = 0, int colSpan = 0, Qt::Alignment align = Qt::AlignLeft);
+        int rowSpan = 0, int colSpan = 0, Qt::Alignment align = Qt::Alignment());
     GridLayoutDescriptor& add(QLayout* layout, int row, int col,
-        int rowSpan = 0, int colSpan = 0, Qt::Alignment align = Qt::AlignLeft);
-    GridLayoutDescriptor& add(LabelPair* pair, int row, int col, Qt::Alignment = Qt::AlignLeft);
+        int rowSpan = 0, int colSpan = 0, Qt::Alignment align = Qt::Alignment());
+    GridLayoutDescriptor& add(LabelPair* pair, int row, int col, Qt::Alignment align = Qt::Alignment());
     GridLayoutDescriptor& apply(QWidget* parent);
 
     inline QGridLayout* layout() { return _layout; }

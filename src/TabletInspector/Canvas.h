@@ -2,6 +2,7 @@
 
 
 #include "Public.h"
+#include "Models.h"
 
 
 class CanvasStroke : public QList<QPoint> {
@@ -19,6 +20,7 @@ public:
     void notifyTablet(TabletInfo* info) override;
     void notifyTabletData(const QByteArray& data) override;
     void clearTabletData() override;
+    void loadData(PenDataModel* model);
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;

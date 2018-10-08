@@ -245,22 +245,32 @@
         <translation type="unfinished">滑动条</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="62"/>
+        <location filename="Strings.cpp" line="60"/>
+        <source>Analytics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Strings.cpp" line="61"/>
+        <source>Raw Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Strings.cpp" line="69"/>
         <source>Tablet connected, path: %1.</source>
         <translation type="unfinished">数位板已连接，路径：%1。</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="65"/>
+        <location filename="Strings.cpp" line="72"/>
         <source>Tablet disconnected, path: %1.</source>
         <translation type="unfinished">数位板已断开，路径：%1。</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="68"/>
+        <location filename="Strings.cpp" line="75"/>
         <source>Tablet read error, code: %1.</source>
         <translation type="unfinished">数位板读取错误，代码：%1。</translation>
     </message>
     <message>
-        <location filename="Strings.cpp" line="71"/>
+        <location filename="Strings.cpp" line="78"/>
         <source>Open tablet failed, error: %1.
 
 If Other programs such as driver is running, please close it first to use TabletInspector.</source>

@@ -60,6 +60,12 @@ public:
     static QString touchBtnDown();
     static QString slider();
     static QString sliderPress();
+    static QString analytics();
+    static QString rawData();
+    static QString ax();
+    static QString ay();
+    static QString altitude();
+    static QString azimuth();
 
     static QString msg_tabletConnected();
     static QString msg_tabletDisconnected();
