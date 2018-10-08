@@ -1,40 +1,22 @@
 #pragma once
 
 
-class HexModel : public QAbstractListModel {
-    Q_OBJECT
-public:
-    HexModel(QObject* parent = nullptr);
-    virtual ~HexModel() = default;
-
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-    void add(const QByteArray& data);
-
-private:
-    QList<QByteArray> _datas;
-    enum ItemType {
-        None = 0,
-        PenDown = 1,
-        PenBtnDown = 2,
-    };
-    QMap<ItemType, QBrush> _brushes;
-
-    ItemType getItemType(const QByteArray& data) const;
-};
+#include "Public.h"
+#include "Models.h"
 
 
-class HexPage : public QListView
-{
+class HexPage : public QListView,
+    public ITabletAwareWidget {
     Q_OBJECT
 public:
     HexPage(QWidget* parent = nullptr);
     virtual ~HexPage();
 
-    void addData(const QByteArray& data);
+    void notifyTablet(TabletInfo* info) override;
+    void notifyTabletData(const QByteArray& data) override;
+    void clearTabletData() override;
 
 private:
-    HexModel*           _model;
+    PenDataModel* dataModel();
 };
 

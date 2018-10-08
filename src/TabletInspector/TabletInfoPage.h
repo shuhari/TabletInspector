@@ -4,13 +4,16 @@
 #include "Public.h"
 
 
-class TabletInfoPage : public QTableWidget {
+class TabletInfoPage : public QTableWidget,
+    public ITabletAwareWidget {
     Q_OBJECT
 public:
     TabletInfoPage(QWidget* parent = nullptr);
     virtual ~TabletInfoPage() = default;
 
-    void setInfo(TabletInfo* info);
+    void notifyTablet(TabletInfo* info) override;
+    void notifyTabletData(const QByteArray& data) override;
+    void clearTabletData() override;
 
 private:
     void setRow(int row, const QString& name, const QString& value, bool alignRight = false);

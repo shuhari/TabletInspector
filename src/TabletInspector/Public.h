@@ -51,3 +51,11 @@ private:
 
     DataType getDataType();
 };
+
+
+struct ITabletAwareWidget {
+public:
+    virtual void notifyTablet(TabletInfo* info) = 0;
+    virtual void notifyTabletData(const QByteArray& data) = 0;
+    virtual void clearTabletData() = 0;
+};

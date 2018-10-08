@@ -55,7 +55,7 @@ void RealTimePage::setupUi() {
 }
 
 
-void RealTimePage::setInfo(TabletInfo* info) {
+void RealTimePage::notifyTablet(TabletInfo* info) {
     _tabletInfo = info;
     if (info) {
         _xPair->setValue(QString("/ %1").arg(info->size.width()));
@@ -82,7 +82,7 @@ void RealTimePage::clearAll() {
 }
 
 
-void RealTimePage::setData(const QByteArray& data) {
+void RealTimePage::notifyTabletData(const QByteArray& data) {
 
     clearAll();
 
@@ -131,4 +131,8 @@ void RealTimePage::setData(const QByteArray& data) {
         }
         break;
     }
+}
+
+
+void RealTimePage::clearTabletData() {
 }

@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include "Public.h"
+#include "Models.h"
 #include "TabletDetector.h"
 #include "TabletReader.h"
 #include "ConnectionIndicator.h"
@@ -29,19 +31,23 @@ private:
 
         fileExit = 101,
 
-        viewToolBar = 201,
-        viewStatusBar = 202,
-        viewLogs = 203,
-        viewProp = 204,
-        viewData = 205,
+        editClear = 201,
 
-        toolSettings = 301,
+        viewToolBar = 301,
+        viewStatusBar = 302,
+        viewLogs = 303,
+        viewProp = 304,
+        viewData = 305,
 
-        helpAbout = 1101,
+        toolSettings = 401,
+
+        helpAbout = 501,
     };
     QMap<Actions, QAction*> _actions;
     TabletDetector*         _tabletDetector;
     TabletReader*           _tabletReader;
+    PenDataModel*           _penDataModel;
+
     ConnectionIndicator*    _connectionIndicator;
     LogList*                _logList;
     Canvas*                 _canvas;
@@ -63,9 +69,11 @@ private:
         Actions actionKey = Actions::None, QIcon actionIcon = QIcon());
     void        onInitialUpdate();
     void        stopReader(bool wait = false);
+    void        getTabletAwareWidgets(QList<ITabletAwareWidget*>& widgets);
 
 private slots:
     void        onFileExit();
+    void        onEditClear();
     void        onViewStatusBar();
     void        onToolSettings();
     void        onHelpAbout();

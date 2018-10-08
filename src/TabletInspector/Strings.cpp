@@ -5,11 +5,13 @@
 QString Strings::appTitle() { return tr("Tablet Inspector"); }
 
 QString Strings::menuFile() { return tr("&File"); }
+QString Strings::menuEdit() { return tr("&Edit"); }
 QString Strings::menuView() { return tr("&View"); }
 QString Strings::menuHelp() { return tr("&Help"); }
 QString Strings::menuTool() { return tr("&Tools"); }
 
 QString Strings::actionFileExit()      { return tr("E&xit"); }
+QString Strings::actionEditClear() { return tr("&Clear"); }
 QString Strings::actionViewToolBar()   { return tr("&Toolbar"); }
 QString Strings::actionViewStatusBar() { return tr("&Status Bar"); }
 QString Strings::actionToolSettings()  { return tr("&Settings..."); }
@@ -64,4 +66,7 @@ QString Strings::msg_tabletDisconnected() {
 }
 QString Strings::msg_tabletReadError() {
     return tr("Tablet read error, code: %1.");
+}
+QString Strings::msg_tabletOpenFailed() {
+    return tr("Open tablet failed, error: %1.\n\nIf Other programs such as driver is running, please close it first to use TabletInspector.");
 }

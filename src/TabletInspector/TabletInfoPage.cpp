@@ -13,11 +13,11 @@ TabletInfoPage::TabletInfoPage(QWidget* parent) :
     setSelectionMode(QAbstractItemView::SingleSelection);
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     setFont(QFont("Tahoma", 9));
-    setInfo(nullptr);
+    notifyTablet(nullptr);
 }
 
 
-void TabletInfoPage::setInfo(TabletInfo* info) {
+void TabletInfoPage::notifyTablet(TabletInfo* info) {
     if (info) {
         setRowCount(13);
         int row = 0;
@@ -41,6 +41,14 @@ void TabletInfoPage::setInfo(TabletInfo* info) {
     } else {
         setRowCount(0);
     }
+}
+
+
+void TabletInfoPage::notifyTabletData(const QByteArray& data) {
+}
+
+
+void TabletInfoPage::clearTabletData() {
 }
 
 

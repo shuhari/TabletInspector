@@ -6,14 +6,16 @@
 
 
 
-class RealTimePage : public QWidget {
+class RealTimePage : public QWidget,
+    public ITabletAwareWidget {
     Q_OBJECT
 public:
     RealTimePage(QWidget* parent = nullptr);
     virtual ~RealTimePage();
 
-    void setInfo(TabletInfo* info);
-    void setData(const QByteArray& data);
+    void notifyTablet(TabletInfo* info) override;
+    void notifyTabletData(const QByteArray& data) override;
+    void clearTabletData() override;
 
 private:
     TabletInfo*     _tabletInfo;

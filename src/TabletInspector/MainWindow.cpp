@@ -2,7 +2,6 @@
 #include "MainWindow.h"
 #include "Strings.h"
 #include "Resources.h"
-#include "Public.h"
 #include "QtHelper.h"
 #include "SettingsDialog.h"
 
@@ -11,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     _tabletDetector(nullptr),
     _tabletReader(nullptr) {
+
+    _penDataModel = new PenDataModel(this);
 
     setWindowTitle(Strings::appTitle());
     setWindowIcon(Resources::appIcon());
@@ -81,6 +82,8 @@ QAction* MainWindow::createAction(Actions key, const QString text, void (MainWin
 void MainWindow::createActions() {
     createAction(fileExit, Strings::actionFileExit(), &MainWindow::onFileExit);
 
+    createAction(editClear, Strings::actionEditClear(), &MainWindow::onEditClear, Resources::clear());
+
     createAction(viewStatusBar, Strings::actionViewStatusBar(), &MainWindow::onViewStatusBar,
         QIcon(), true);
 
@@ -94,6 +97,8 @@ void MainWindow::createActions() {
 void MainWindow::createToolBar() {
     auto toolbar = addToolBar(Strings::actionViewToolBar());
     
+    toolbar->addAction(_actions[editClear]);
+    toolbar->addSeparator();
     toolbar->addAction(_actions[viewLogs]);
     toolbar->addAction(_actions[viewProp]);
     toolbar->addAction(_actions[viewData]);
@@ -115,9 +120,13 @@ void MainWindow::createStatusBar() {
 
 void MainWindow::createSideBars() {
     _logList = new LogList();
+
     _infoPage = new TabletInfoPage();
+
     _realTimePage = new RealTimePage();
+
     _hexPage = new HexPage();
+    _hexPage->setModel(_penDataModel);
 
     auto leftTab = new QTabWidget();
     leftTab->setTabPosition(QTabWidget::South);
@@ -176,6 +185,9 @@ void MainWindow::createMenuBar() {
     SubMenu(mainMenu, Strings::menuFile())
         .action(_actions[fileExit]);
 
+    SubMenu(mainMenu, Strings::menuEdit())
+        .action(_actions[editClear]);
+
     SubMenu(mainMenu, Strings::menuView())
         .action(_actions[viewToolBar])
         .action(_actions[viewStatusBar])
@@ -194,6 +206,15 @@ void MainWindow::createMenuBar() {
 
 void MainWindow::onFileExit() {
     close();
+}
+
+
+void MainWindow::onEditClear() {
+    QList<ITabletAwareWidget*> widgets;
+    getTabletAwareWidgets(widgets);
+    for (auto widget : widgets) {
+        widget->clearTabletData();
+    }
 }
 
 
@@ -218,15 +239,28 @@ void MainWindow::onHelpAbout() {
 }
 
 
+void MainWindow::getTabletAwareWidgets(QList<ITabletAwareWidget*>& widgets) {
+    widgets << _infoPage;
+    widgets << _realTimePage;
+    widgets << _hexPage;
+    widgets << _canvas;
+}
+
+
 void MainWindow::onTabletConnected(const QString& devicePath) {
     stopReader();
 
     auto reader = new TabletReader(this);
-    if (reader->open(devicePath)) {
+    DWORD dwError;
+    if (reader->open(devicePath, dwError)) {
         auto& tabletInfo = reader->info();
         _logList->info(Strings::msg_tabletConnected().arg(devicePath));
-        _infoPage->setInfo(&tabletInfo);
-        _realTimePage->setInfo(&tabletInfo);
+
+        QList<ITabletAwareWidget*> widgets;
+        getTabletAwareWidgets(widgets);
+        for (auto widget : widgets) {
+            widget->notifyTablet(&tabletInfo);
+        }
 
         _tabletReader = reader;
         _connectionIndicator->setConnected(tabletInfo.tabletName());
@@ -234,6 +268,8 @@ void MainWindow::onTabletConnected(const QString& devicePath) {
         connect(reader, &TabletReader::tabletReadError, this, &MainWindow::onTabletReadError);
         _tabletReader->startRead();
     } else {
+        QMessageBox::information(this, Strings::appTitle(),
+            Strings::msg_tabletOpenFailed().arg(dwError));
         delete reader;
     }
 }
@@ -242,15 +278,23 @@ void MainWindow::onTabletConnected(const QString& devicePath) {
 void MainWindow::onTabletDisconnected(const QString& devicePath) {
     _connectionIndicator->setDisconnected();
     _logList->warn(Strings::msg_tabletDisconnected().arg(devicePath));
-    _infoPage->setInfo(nullptr);
-    _realTimePage->setInfo(nullptr);
+
+    QList<ITabletAwareWidget*> widgets;
+    getTabletAwareWidgets(widgets);
+    for (auto widget : widgets) {
+        widget->notifyTablet(nullptr);
+    }
     stopReader();
 }
 
 
-void MainWindow::onTabletReadData(const QByteArray& buffer) {
-    _hexPage->addData(buffer);
-    _realTimePage->setData(buffer);
+void MainWindow::onTabletReadData(const QByteArray& data) {
+
+    QList<ITabletAwareWidget*> widgets;
+    getTabletAwareWidgets(widgets);
+    for (auto widget : widgets) {
+        widget->notifyTabletData(data);
+    }
 }
 
 

@@ -39,7 +39,7 @@ TabletReader::~TabletReader() {
 }
 
 
-bool TabletReader::open(const QString& devicePath) {
+bool TabletReader::open(const QString& devicePath, DWORD& dwError) {
     WCHAR szDevicePath[_MAX_PATH] = { 0 };
     QByteArray buffer(128, 0);
     ZeroMemory(szDevicePath, _MAX_PATH * sizeof(WCHAR));
@@ -81,6 +81,7 @@ bool TabletReader::open(const QString& devicePath) {
     return true;
 
 error_exit:
+    dwError = GetLastError();
     close();
     return false;
 }

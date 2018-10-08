@@ -11,5 +11,6 @@
         <file alias="logs.png">images/logs.png</file>
         <file alias="prop.png">images/prop.png</file>
         <file alias="data.png">images/data.png</file>
+        <file alias="clear.png">images/clear.png</file>
     </qresource>
 </RCC>

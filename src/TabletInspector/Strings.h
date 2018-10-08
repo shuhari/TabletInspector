@@ -7,12 +7,13 @@ public:
     static QString appTitle();
 
     static QString menuFile();
+    static QString menuEdit();
     static QString menuView();
     static QString menuTool();
     static QString menuHelp();
 
     static QString actionFileExit();
-
+    static QString actionEditClear();
     static QString actionViewToolBar();
     static QString actionViewStatusBar();
 
@@ -63,4 +64,5 @@ public:
     static QString msg_tabletConnected();
     static QString msg_tabletDisconnected();
     static QString msg_tabletReadError();
+    static QString msg_tabletOpenFailed();
 };

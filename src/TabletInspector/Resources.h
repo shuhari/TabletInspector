@@ -12,6 +12,7 @@ public:
     static QIcon logs();
     static QIcon prop();
     static QIcon data();
+    static QIcon clear();
 
     static QPixmap connected();
     static QPixmap disconnected();

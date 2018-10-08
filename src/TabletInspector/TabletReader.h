@@ -23,7 +23,7 @@ public:
 
     inline TabletInfo& info() { return _info; }
 
-    bool open(const QString& devicePath);
+    bool open(const QString& devicePath, DWORD& dwError);
     void close();
     bool read(QByteArray& buffer, PULONG ulReaded);
 
