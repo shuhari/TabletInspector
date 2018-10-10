@@ -18,6 +18,7 @@ struct TabletInfo {
     bool        isPassive;
 
     QString tabletName();
+    QString sizeStr();
     void copyFrom(TabletInfo& src);
 };
 
@@ -62,3 +63,7 @@ public:
     virtual void notifyTabletData(const QByteArray& data) = 0;
     virtual void clearTabletData() = 0;
 };
+
+
+QString formatInt(int value);
+QString toHex(const QByteArray& data);

@@ -14,8 +14,8 @@ public:
 
 private:
     TabletInfo          _tabletInfo;
-    PenDataModel*       _model;
-    QTableWidget*       _table;
+    PenDataTableModel*  _model;
+    QTableView*         _table;
     Canvas*             _canvas;
     QChartView*         _pressureView;
     QChartView*         _altitudeView;
@@ -23,7 +23,7 @@ private:
 
     void                setupUi();
     void                loadData();
-    void                setTableCell(int row, int col, const QString& value);
     QChartView*         createChartView(const QString& title);
+    void                setLineSeries(QChartView* view, QLineSeries* series);
 };
 

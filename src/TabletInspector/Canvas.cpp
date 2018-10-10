@@ -135,3 +135,14 @@ void Canvas::loadData(PenDataModel* model) {
     }
     _strokes.append(stroke);
 }
+
+
+void Canvas::loadData(PenDataTableModel* model) {
+    auto stroke = new CanvasStroke();
+    for (int i = 0; i < model->rowCount(); i++) {
+        const QByteArray& data = model->at(i);
+        QPoint point = DataParser(data).position();
+        stroke->append(point);
+    }
+    _strokes.append(stroke);
+}

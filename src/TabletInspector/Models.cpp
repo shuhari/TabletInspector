@@ -1,8 +1,87 @@
 #include "stdafx.h"
 #include "Models.h"
+#include "Strings.h"
 
 
 #define MAX_ITEMS    300
+
+
+TabletInfoModel::TabletInfoModel(QObject* parent) :
+    QAbstractTableModel(parent),
+    _info(nullptr) {
+}
+
+
+void TabletInfoModel::setInfo(TabletInfo* info) {
+    beginResetModel();
+    _info = info;
+    endResetModel();
+}
+
+
+int TabletInfoModel::columnCount(const QModelIndex& parent) const {
+    return 1;
+}
+
+
+int TabletInfoModel::rowCount(const QModelIndex &parent) const {
+    return _info ? Props::MaxCount : 0;
+}
+
+
+QVariant TabletInfoModel::data(const QModelIndex &index, int role) const {
+    if (!index.isValid() || !_info)
+        return QVariant();
+    int row = index.row(),
+        col = index.column();
+    if (row < 0 || row >= Props::MaxCount ||
+        col < 0 || col >= 2)
+        return QVariant();
+
+    if (col == 0 && role == Qt::DisplayRole) {
+        switch ((Props)row) {
+        case oem: return _info->oem;
+        case model: return _info->model;
+        case fixtureDate: return _info->fixtureDate;
+        case company: return _info->company;
+        case size: return _info->sizeStr();
+        case maxPressure: return formatInt(_info->maxPressure);
+        case pBtnNum: return formatInt(_info->pBtnNum);
+        case hBtnNum: return formatInt(_info->hBtnNum);
+        case sBtnNum: return formatInt(_info->sBtnNum);
+        case lpi: return formatInt(_info->lpi);
+        case rate: return formatInt(_info->rate);
+        case isMonitor: return _info->isMonitor ? Strings::trueStr() : Strings::falseStr();
+        case isPassive: return _info->isPassive ? Strings::passive() : Strings::unPassive();
+        }
+    }
+
+    return QVariant();
+}
+
+
+QVariant TabletInfoModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    if (orientation == Qt::Vertical) {
+        if (role == Qt::DisplayRole) {
+            switch ((Props)section) {
+            case oem: return Strings::oem();
+            case model: return Strings::model();
+            case fixtureDate: return Strings::fixtureDate();
+            case company: return Strings::company();
+            case size: return Strings::size();
+            case maxPressure: return Strings::maxPressure();
+            case pBtnNum: return Strings::pBtnNum();
+            case hBtnNum: return Strings::hBtnNum();
+            case sBtnNum: return Strings::sBtnNum();
+            case lpi: return Strings::lpi();
+            case rate: return Strings::rate();
+            case isMonitor: return Strings::isMonitor();
+            case isPassive: return Strings::isPassive();
+            }
+        }
+    }
+    return QVariant();
+}
 
 
 PenDataModel::PenDataModel(QObject* parent) :
@@ -59,7 +138,7 @@ QVariant PenDataModel::data(const QModelIndex &index, int role) const {
     } else if (role == Qt::UserRole) {
         return _datas[index.row()];
     }
-    
+
     return QVariant();
 }
 
@@ -128,18 +207,93 @@ PenDataModel* PenDataModel::slice(int nMin, int nMax) {
 }
 
 
-QString PenDataModel::toHex(const QByteArray& data) const {
-    char hexStr[200] = { 0 };
-    ZeroMemory(hexStr, sizeof(hexStr));
-    char* pNext = hexStr;
-    for (BYTE b : data) {
-        wsprintfA(pNext, "%02X ", b);
-        pNext += 3;
-    }
-    return QString(hexStr);
+const QByteArray& PenDataModel::at(int row) {
+    return _datas[row];
 }
 
 
-const QByteArray& PenDataModel::at(int row) {
+PenDataTableModel::PenDataTableModel(PenDataModel* srcModel,
+    int nMin, int nMax, QObject* parent) :
+    QAbstractTableModel(parent) {
+    nMin = qMax(0, nMin);
+    nMax = qMin(srcModel->rowCount() - 1, nMax);
+
+    for (int i = nMin; i <= nMax; i++) {
+        _datas.append(srcModel->at(i));
+    }
+}
+
+
+PenDataTableModel::~PenDataTableModel() {
+    _datas.clear();
+}
+
+
+int PenDataTableModel::columnCount(const QModelIndex& parent) const {
+    return Props::MaxCols;
+}
+
+
+int PenDataTableModel::rowCount(const QModelIndex &parent) const {
+    return _datas.size();
+}
+
+
+QVariant PenDataTableModel::data(const QModelIndex &index, int role) const {
+    if (!index.isValid())
+        return QVariant();
+    int row = index.row(),
+        col = index.column();
+    if (row < 0 || row >= _datas.size() ||
+        col < 0 || col >= MaxCols)
+        return QVariant();
+
+    const QByteArray& data = _datas[row];
+    DataParser parser(data);
+    QPoint pos = parser.position();
+    int pressure = parser.pressure();
+    QPoint tilt = parser.tilt();
+    QPoint polar = parser.convertToPolar(tilt);
+    if (role == Qt::DisplayRole) {
+        switch ((Props)col) {
+        case raw: return toHex(data);
+        case x: return formatInt(pos.x());
+        case y: return formatInt(pos.y());
+        case Props::pressure: return formatInt(pressure);
+        case ax: return formatInt(tilt.x());
+        case ay: return formatInt(tilt.y());
+        case altitude: return formatInt(polar.x());
+        case azimuth: return formatInt(polar.y());
+        }
+    }
+
+    return QVariant();
+}
+
+
+QVariant PenDataTableModel::headerData(int section, Qt::Orientation orientation, int role) const {
+    if (orientation == Qt::Horizontal) {
+        if (role == Qt::DisplayRole) {
+            switch ((Props)section) {
+            case raw: return Strings::rawData();
+            case x: return Strings::x();
+            case y: return Strings::y();
+            case pressure: return Strings::pressure();
+            case ax: return Strings::ax();
+            case ay: return Strings::ay();
+            case altitude: return Strings::altitude();
+            case azimuth: return Strings::azimuth();
+            }
+        }
+    } else if (orientation == Qt::Vertical) {
+        if (role == Qt::DisplayRole) {
+            return QString("%1").arg(section + 1);
+        }
+    }
+    return QVariant();
+}
+
+
+const QByteArray& PenDataTableModel::at(int row) {
     return _datas[row];
 }

@@ -2,9 +2,10 @@
 
 
 #include "Public.h"
+#include "Models.h"
 
 
-class TabletInfoPage : public QTableWidget,
+class TabletInfoPage : public QTableView,
     public ITabletAwareWidget {
     Q_OBJECT
 public:
@@ -16,9 +17,6 @@ public:
     void clearTabletData() override;
 
 private:
-    void setRow(int row, const QString& name, const QString& value, bool alignRight = false);
-    void setCell(int row, int col, const QString& text, int align = Qt::AlignLeft);
-    QString formatInt(int value);
-    QString formatBool(bool value);
+    TabletInfoModel*        _model;
 };
 

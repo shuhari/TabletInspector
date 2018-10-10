@@ -21,6 +21,7 @@ public:
     void notifyTabletData(const QByteArray& data) override;
     void clearTabletData() override;
     void loadData(PenDataModel* model);
+    void loadData(PenDataTableModel* model);
 
 protected:
     virtual void paintEvent(QPaintEvent *event) override;

@@ -148,7 +148,7 @@ void MainWindow::createSideBars() {
     auto rightDock = createDock(Strings::data(), rightTab,
         Qt::RightDockWidgetArea, Qt::RightDockWidgetArea,
         viewData, Resources::data());
-    rightDock->setMinimumWidth(300);
+    rightDock->setMinimumWidth(350);
 }
 
 

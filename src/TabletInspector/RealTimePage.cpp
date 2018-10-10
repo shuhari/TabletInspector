@@ -9,6 +9,8 @@ RealTimePage::RealTimePage(QWidget* parent) :
     QWidget(parent),
     _tabletInfo(nullptr) {
 
+    setFont(QFont("Tahoma", 12));
+
     setupUi();
 }
 
@@ -41,7 +43,7 @@ void RealTimePage::setupUi() {
         .add(_xPair, 0, 0, Qt::AlignRight)
         .add(_yPair, 1, 0, Qt::AlignRight)
         .add(_pressurePair, 2, 0, Qt::AlignRight)
-        .add(_pressureProgress, 3, 0, 1, 2, Qt::AlignJustify)
+        .add(_pressureProgress, 3, 0, 1, 2)
         .add(_penPair, 4, 0)
         .add(_penBtnPair, 5, 0)
         .add(_touchPair, 6, 0)

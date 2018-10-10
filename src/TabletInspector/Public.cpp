@@ -12,6 +12,12 @@ QString TabletInfo::tabletName() {
 }
 
 
+QString TabletInfo::sizeStr() {
+    return QString("%1 x %2").arg(size.width())
+        .arg(size.height());
+}
+
+
 void TabletInfo::copyFrom(TabletInfo& src) {
     devicePath = src.devicePath;
     oem = src.oem;
@@ -103,4 +109,21 @@ QPoint DataParser::convertToPolar(QPoint tilt) {
     long altitude = (long)(90 - sqrt((tilt.x() * tilt.x()) + (tilt.y() * tilt.y()))) * 10;
     long azimuth = (long)(1800 + 1800 * atan2(-tilt.x(), -tilt.y()) / 3.14159);//TanHuang arithmetic
     return QPoint(altitude, azimuth);
+}
+
+
+QString formatInt(int value) {
+    return QString("%1").arg(value);
+}
+
+
+QString toHex(const QByteArray& data) {
+    char hexStr[200] = { 0 };
+    ZeroMemory(hexStr, sizeof(hexStr));
+    char* pNext = hexStr;
+    for (BYTE b : data) {
+        wsprintfA(pNext, "%02X ", b);
+        pNext += 3;
+    }
+    return QString(hexStr);
 }
