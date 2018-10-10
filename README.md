@@ -33,5 +33,5 @@ You can see raw data with pressure and tilt in detail.
 
 ## Some note and implementation details
 
-The program acess tablet through USB protocol especially `WinUSB`. If any other USB programs (such as tablet driver or USB debugging tools) is already running, those programs may lock others from visiting USB, causing this application to fail.. In such case, you should close those programs before running the application.
+The program acess tablet through USB protocol especially `WinUSB`. If any other USB programs (such as tablet driver or USB debugging tools) is already running, those programs may lock others from visiting USB, causing this application to fail. In such case, you should close those programs before running the application.
 
