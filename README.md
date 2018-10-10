@@ -19,6 +19,19 @@ The translation files are built with standard `Qt` translation toolset. Currentl
 
 ## Usage
 
-Open built `.exe` file and conncted tablet. The tablet should be automatically detected and shown in the program. 
+Open built `.exe` file and connct your tablet to USB port. The tablet should be automatically detected and shown in the program. 
 
-The program acess tablet through USB protocol. If any other program (such as tablet driver or USB debugging tools) is also visiting the same device, the program may not work. In such case, you should close those programs first.
+![Main screen](https://raw.githubusercontent.com/shuhari/TabletInspector/master/screenshots/main-screen.png)
+
+Draw on tablet, and you should see raw data in right panel with color highlighted. 
+
+For data that represent drawing (normally shown in green), you can right-click on the right panel and select `Analytics`. The analytics screen should raise up as follows.
+
+![Analytics screen](https://raw.githubusercontent.com/shuhari/TabletInspector/master/screenshots/analytics-screen.png)
+
+You can see raw data with pressure and tilt in detail.
+
+## Some note and implementation details
+
+The program acess tablet through USB protocol especially `WinUSB`. If any other USB programs (such as tablet driver or USB debugging tools) is already running, those programs may lock others from visiting USB, causing this application to fail.. In such case, you should close those programs before running the application.
+
