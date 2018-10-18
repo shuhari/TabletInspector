@@ -38,23 +38,35 @@ QVariant TabletInfoModel::data(const QModelIndex &index, int role) const {
         col < 0 || col >= 2)
         return QVariant();
 
-    if (col == 0 && role == Qt::DisplayRole) {
-        switch ((Props)row) {
-        case oem: return _info->oem;
-        case model: return _info->model;
-        case fixtureDate: return _info->fixtureDate;
-        case company: return _info->company;
-        case size: return _info->sizeStr();
-        case maxPressure: return formatInt(_info->maxPressure);
-        case pBtnNum: return formatInt(_info->pBtnNum);
-        case hBtnNum: return formatInt(_info->hBtnNum);
-        case sBtnNum: return formatInt(_info->sBtnNum);
-        case lpi: return formatInt(_info->lpi);
-        case rate: return formatInt(_info->rate);
-        case isMonitor: return _info->isMonitor ? Strings::trueStr() : Strings::falseStr();
-        case isPassive: return _info->isPassive ? Strings::passive() : Strings::unPassive();
+    if (role == Qt::DisplayRole) {
+        if (col == 0) {
+            switch ((Props)row) {
+            case oem: return _info->oem;
+            case model: return _info->model;
+            case fixtureDate: return _info->fixtureDate;
+            case company: return _info->company;
+            case size: return _info->sizeStr();
+            case maxPressure: return formatInt(_info->maxPressure);
+            case pBtnNum: return formatInt(_info->pBtnNum);
+            case hBtnNum: return formatInt(_info->hBtnNum);
+            case sBtnNum: return formatInt(_info->sBtnNum);
+            case lpi: return formatInt(_info->lpi);
+            case rate: return formatInt(_info->rate);
+            case isMonitor: return _info->isMonitor ? Strings::trueStr() : Strings::falseStr();
+            case isPassive: return _info->isPassive ? Strings::passive() : Strings::unPassive();
+            }
+        }
+    } else if (role == Qt::ForegroundRole) {
+        if (col == 0)
+            return QColor(0, 0, 255);
+    } else if (role == Qt::FontRole) {
+        if (col == 0) {
+            QFont font = qApp->font();
+            font.setBold(true);
+            return font;
         }
     }
+    
 
     return QVariant();
 }

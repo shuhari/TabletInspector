@@ -35,3 +35,7 @@ You can see raw data with pressure and tilt in detail.
 
 The program acess tablet through USB protocol especially `WinUSB`. If any other USB programs (such as tablet driver or USB debugging tools) is already running, those programs may lock others from visiting USB, causing this application to fail. In such case, you should close those programs before running the application.
 
+
+## Known Issues
+
+* If seemed that updating Qt progress bar frequently sometimes to be terribly slow. If you see the hex data page show data much slower than your painting speed, please switch to tablet info page rather than real-time page (to hide the pressure progress control from display).
