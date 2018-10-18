@@ -4,9 +4,9 @@ Utility program, developed with `Visual C++` and `Qt`, to inspect and verify har
 
 ## Prerequirest
 
-* Visual Studio 2017 with C++ toolset
+* Visual Studio 2015 with C++ toolset
 * Qt 5.x (Tested for Qt **5.11.2**)
-* Qt add-in for Visual Studio 2017
+* Qt add-in for Visual Studio 2015
 
 ## Build From Source
 
