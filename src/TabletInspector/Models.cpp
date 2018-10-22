@@ -3,7 +3,7 @@
 #include "Strings.h"
 
 
-#define MAX_ITEMS    300
+#define MAX_ITEMS    1000
 
 
 TabletInfoModel::TabletInfoModel(QObject* parent) :

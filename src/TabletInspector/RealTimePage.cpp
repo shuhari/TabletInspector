@@ -86,7 +86,6 @@ void RealTimePage::clearAll() {
 void RealTimePage::notifyTabletData(const QByteArray& data) {
 
     clearAll();
-
     if (!_tabletInfo || data.size() < 2 || data[0] != 0x08)
         return;
     DataParser parser(data);
@@ -95,45 +94,61 @@ void RealTimePage::notifyTabletData(const QByteArray& data) {
 
     auto dataType = parser.dataType();
     switch (dataType) {
-        case DataParser::TouchBtn: {
-            int nBtnIndex = parser.touchBtnIndex();
-            if (nBtnIndex >= 0)
-                _touchPair->setValue(Strings::touchBtnDown().arg(nBtnIndex + 1));
-        }
-                                   break;
-        case DataParser::Slider: {
-            int sliderId = parser.sliderId();
-            _sliderPair->setValue(Strings::sliderPress().arg(sliderId));
-        }
-                                 break;
+    case DataParser::TouchBtn:
+        updateTouch(parser.touchBtnIndex());
+        break;
+    case DataParser::Slider:
+        updateSlider(parser.sliderId());
+        break;
 
-        case DataParser::PenDown:
-        case DataParser::PenBtnDown:
-        case DataParser::PenUp: {
-
-            QPoint pos = parser.position();
-            int pressure = parser.pressure();
-            QString strX = QString("%1 / %2").arg(pos.x()).arg(_tabletInfo->size.width());
-            QString strY = QString("%1 / %2").arg(pos.y()).arg(_tabletInfo->size.height());
-            _xPair->setValue(strX);
-            _yPair->setValue(strY);
-            _pressurePair->setValue(QString("%1 / %2")
-                .arg(pressure).arg(_tabletInfo->maxPressure));
-            _pressureProgress->setValue(pressure);
-
-            if (dataType == DataParser::PenDown) {
-                _penPair->setValue(Strings::penDown());
-            } else if (dataType == DataParser::PenBtnDown) {
-                int nBtnIndex = parser.penBtnIndex();
-                if (nBtnIndex >= 0) {
-                    _penBtnPair->setValue(Strings::penBtnDown().arg(nBtnIndex + 1));
-                }
-            }
-        }
+    case DataParser::PenDown:
+    case DataParser::PenBtnDown:
+    case DataParser::PenUp:
+        updatePen(parser);
         break;
     }
 }
 
 
 void RealTimePage::clearTabletData() {
+}
+
+
+void RealTimePage::updateTouch(int touchBtnIndex) {
+    if (touchBtnIndex >= 0)
+        _touchPair->setValue(Strings::touchBtnDown().arg(touchBtnIndex + 1));
+}
+
+
+void RealTimePage::updateSlider(int sliderId) {
+    _sliderPair->setValue(Strings::sliderPress().arg(sliderId));
+}
+
+
+void RealTimePage::updatePen(DataParser& parser) {
+    QPoint pos = parser.position();
+    int pressure = parser.pressure();
+    QString strX = QString("%1 / %2").arg(pos.x()).arg(_tabletInfo->size.width());
+    QString strY = QString("%1 / %2").arg(pos.y()).arg(_tabletInfo->size.height());
+    _xPair->setValue(strX);
+    _yPair->setValue(strY);
+    
+    _pressurePair->setValue(QString("%1 / %2")
+        .arg(pressure).arg(_tabletInfo->maxPressure));
+    static DWORD prevUpdateTime = 0;  // slow down progress update rate for performance reason
+    const DWORD updateInterval = 30;  // milliseconds
+    DWORD interval = GetTickCount() - prevUpdateTime;
+    if (interval >= updateInterval) {
+        _pressureProgress->setValue(pressure);
+        prevUpdateTime = GetTickCount();
+    }
+
+    if (parser.dataType() == DataParser::PenDown) {
+        _penPair->setValue(Strings::penDown());
+    } else if (parser.dataType() == DataParser::PenBtnDown) {
+        int nBtnIndex = parser.penBtnIndex();
+        if (nBtnIndex >= 0) {
+            _penBtnPair->setValue(Strings::penBtnDown().arg(nBtnIndex + 1));
+        }
+    }
 }

@@ -30,5 +30,8 @@ private:
 
     void            setupUi();
     void            clearAll();
+    void            updateTouch(int touchBtnIndex);
+    void            updateSlider(int sliderId);
+    void            updatePen(DataParser& parser);
 };
 
